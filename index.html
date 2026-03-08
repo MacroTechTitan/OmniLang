@@ -28,44 +28,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ========== CSS RESET & VARIABLES ========== */
+/* ========== RESET & VARIABLES ========== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Colors - Dark Theme */
   --bg-primary: #0d1117;
   --bg-secondary: #161b22;
   --bg-tertiary: #21262d;
   --bg-hover: #30363d;
-  --bg-active: #388bfd26;
-  --border-primary: #30363d;
-  --border-secondary: #21262d;
-  --border-muted: #21262d;
+  --bg-active: #1c2129;
+  --border: #30363d;
+  --border-subtle: #21262d;
   --text-primary: #e6edf3;
   --text-secondary: #8b949e;
   --text-muted: #484f58;
-  --text-link: #58a6ff;
   --accent-blue: #58a6ff;
+  --accent-blue-dim: #1f6feb;
   --accent-green: #3fb950;
-  --accent-orange: #d29922;
   --accent-red: #f85149;
+  --accent-orange: #d29922;
   --accent-purple: #bc8cff;
   --accent-teal: #39d2c0;
-  --accent-pink: #f778ba;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.5);
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --font-mono: 'JetBrains Mono', monospace;
   --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --sidebar-width: 240px;
-  --sidebar-collapsed: 48px;
-  --topbar-height: 44px;
-  --bottombar-height: 240px;
-  --ai-panel-width: 360px;
-  --tab-height: 36px;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --header-h: 40px;
+  --status-h: 24px;
+  --left-w: 220px;
+  --right-w: 300px;
 }
 
 [data-theme="light"] {
@@ -73,294 +62,323 @@
   --bg-secondary: #f6f8fa;
   --bg-tertiary: #eaeef2;
   --bg-hover: #d0d7de;
-  --bg-active: #0969da1a;
-  --border-primary: #d0d7de;
-  --border-secondary: #d8dee4;
-  --border-muted: #d0d7de;
+  --bg-active: #eef1f5;
+  --border: #d0d7de;
+  --border-subtle: #eaeef2;
   --text-primary: #1f2328;
   --text-secondary: #656d76;
   --text-muted: #8b949e;
-  --text-link: #0969da;
   --accent-blue: #0969da;
+  --accent-blue-dim: #0550ae;
   --accent-green: #1a7f37;
-  --accent-orange: #9a6700;
   --accent-red: #cf222e;
+  --accent-orange: #9a6700;
   --accent-purple: #8250df;
-  --accent-teal: #1b9e85;
-  --accent-pink: #bf3989;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.08);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,0.16);
+  --accent-teal: #1b7c83;
 }
 
 html, body {
   height: 100%;
   overflow: hidden;
-  background: var(--bg-primary);
-  color: var(--text-primary);
   font-family: var(--font-ui);
   font-size: 13px;
-  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-primary);
   -webkit-font-smoothing: antialiased;
 }
 
-/* ========== SCROLLBAR ========== */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-::-webkit-scrollbar-corner { background: transparent; }
-
-/* ========== LAYOUT ========== */
-#app {
-  display: flex;
-  flex-direction: column;
+/* ========== LAYOUT GRID ========== */
+.ide-root {
+  display: grid;
+  grid-template-rows: var(--header-h) 1fr var(--status-h);
+  grid-template-columns: var(--left-w) 1fr var(--right-w);
   height: 100vh;
-  overflow: hidden;
+  width: 100vw;
 }
 
-/* ========== TOP BAR ========== */
-.topbar {
-  height: var(--topbar-height);
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-primary);
+/* ========== HEADER BAR ========== */
+.header {
+  grid-column: 1 / -1;
   display: flex;
   align-items: center;
+  gap: 6px;
   padding: 0 12px;
-  gap: 8px;
-  flex-shrink: 0;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  height: var(--header-h);
   z-index: 100;
 }
 
-.topbar-logo {
+.header-logo {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding-right: 12px;
-  border-right: 1px solid var(--border-primary);
-  cursor: pointer;
+  margin-right: 16px;
+  flex-shrink: 0;
 }
 
-.topbar-logo svg { width: 24px; height: 24px; }
+.header-logo svg {
+  width: 22px;
+  height: 22px;
+}
 
-.topbar-logo span {
-  font-weight: 600;
+.header-logo span {
+  font-weight: 700;
   font-size: 14px;
   letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
-.topbar-project {
+.mode-tabs {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.mode-tab {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  transition: background 0.15s;
-}
-.topbar-project:hover { background: var(--bg-hover); }
-
-.topbar-project-name {
-  font-size: 13px;
-  font-weight: 500;
-  outline: none;
-  background: none;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 6px;
   border: none;
-  color: var(--text-primary);
+  background: transparent;
+  color: var(--text-secondary);
   font-family: var(--font-ui);
-  max-width: 200px;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
 }
 
-.topbar-actions {
+.mode-tab:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.mode-tab.active {
+  background: var(--bg-tertiary);
+  color: var(--accent-blue);
+}
+
+.mode-tab svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.header-spacer { flex: 1; }
+
+.header-actions {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-left: auto;
+  flex-shrink: 0;
 }
 
-.topbar-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  font-size: 12px;
-  font-family: var(--font-ui);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
-}
-.topbar-btn:hover { background: var(--bg-hover); }
-.topbar-btn svg { width: 14px; height: 14px; }
-
-.topbar-btn.run-btn {
-  background: #238636;
-  border-color: #2ea043;
-  color: #fff;
-}
-.topbar-btn.run-btn:hover { background: #2ea043; }
-
-.topbar-btn.deploy-btn {
-  background: var(--accent-blue);
-  border-color: var(--accent-blue);
-  color: #fff;
-}
-.topbar-btn.deploy-btn:hover { opacity: 0.9; }
-
-.topbar-separator {
-  width: 1px;
-  height: 20px;
-  background: var(--border-primary);
-  margin: 0 4px;
-}
-
-.topbar-icon-btn {
+.header-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-md);
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
   border: none;
   background: transparent;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
-.topbar-icon-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
-.topbar-icon-btn.active { color: var(--accent-blue); background: var(--bg-active); }
-.topbar-icon-btn svg { width: 16px; height: 16px; }
 
-.user-avatar {
+.header-btn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.header-btn svg { width: 16px; height: 16px; }
+
+.new-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent-blue-dim);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 8px;
+  transition: background 0.15s;
+}
+
+.new-btn:hover {
+  background: var(--accent-blue);
+}
+
+.new-dropdown {
+  position: absolute;
+  top: 36px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+  min-width: 200px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  z-index: 200;
+  display: none;
+}
+
+.new-dropdown.open { display: block; }
+
+.new-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12.5px;
+  color: var(--text-primary);
+  transition: background 0.1s;
+}
+
+.new-dropdown-item:hover {
+  background: var(--bg-hover);
+}
+
+.new-dropdown-item .emoji {
+  font-size: 16px;
+  width: 24px;
+  text-align: center;
+}
+
+.new-dropdown-item .desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.avatar {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+  background: var(--accent-blue-dim);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 11px;
   font-weight: 600;
-  color: #fff;
-  cursor: pointer;
+  margin-left: 4px;
   flex-shrink: 0;
 }
 
-/* ========== MAIN AREA ========== */
-.main-area {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-}
-
-/* ========== LEFT SIDEBAR ========== */
-.sidebar {
-  width: var(--sidebar-width);
+/* ========== LEFT PANEL ========== */
+.left-panel {
   background: var(--bg-secondary);
-  border-right: 1px solid var(--border-primary);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  overflow: hidden;
-  transition: width 0.2s ease;
-}
-
-.sidebar.collapsed {
-  width: var(--sidebar-collapsed);
-}
-
-.sidebar-tabs {
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid var(--border-primary);
-}
-
-.sidebar-tab {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.15s;
-  border-left: 2px solid transparent;
-  font-size: 12px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.sidebar-tab:hover { background: var(--bg-hover); color: var(--text-primary); }
-.sidebar-tab.active {
-  color: var(--text-primary);
-  border-left-color: var(--accent-blue);
-  background: var(--bg-active);
-}
-.sidebar-tab svg { width: 16px; height: 16px; flex-shrink: 0; }
-.sidebar-tab .tab-label { overflow: hidden; white-space: nowrap; }
-
-.collapsed .tab-label { display: none; }
-.collapsed .sidebar-tab { justify-content: center; padding: 10px 0; }
-
-.sidebar-content {
-  flex: 1;
+  border-right: 1px solid var(--border);
   overflow-y: auto;
   overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
-.collapsed .sidebar-content { display: none; }
+.left-panel::-webkit-scrollbar { width: 4px; }
+.left-panel::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 4px; }
 
-/* File Explorer */
-.file-tree { padding: 4px 0; }
+/* Panel header (mode-specific) */
+.panel-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.panel-section-header button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+
+.panel-section-header button:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Mode content panels */
+.left-mode-content {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.left-mode-content.active {
+  display: flex;
+}
+
+/* ---- File tree ---- */
+.file-tree {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2px 0;
+}
+
+.file-tree::-webkit-scrollbar { width: 4px; }
+.file-tree::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 4px; }
 
 .file-tree-item {
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 8px 3px 0;
+  padding: 4px 8px;
   cursor: pointer;
-  transition: background 0.1s;
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--text-secondary);
+  border-radius: 4px;
+  margin: 0 4px;
+  transition: background 0.1s;
+  position: relative;
   user-select: none;
 }
-.file-tree-item:hover { background: var(--bg-hover); color: var(--text-primary); }
-.file-tree-item.active { background: var(--bg-active); color: var(--text-primary); }
-.file-tree-item.active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--accent-blue);
+
+.file-tree-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
-.file-tree-item { position: relative; }
+
+.file-tree-item.active {
+  background: var(--bg-active);
+  color: var(--text-primary);
+}
 
 .file-tree-icon {
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  width: 18px;
+  text-align: center;
   flex-shrink: 0;
-  font-size: 11px;
 }
-
-.file-tree-toggle {
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  transition: transform 0.15s;
-}
-.file-tree-toggle.open { transform: rotate(90deg); }
 
 .file-tree-name {
   overflow: hidden;
@@ -371,131 +389,394 @@ html, body {
 
 .file-tree-actions {
   display: none;
-  align-items: center;
   gap: 2px;
-  margin-left: auto;
 }
+
 .file-tree-item:hover .file-tree-actions { display: flex; }
 
 .file-tree-action {
-  width: 18px;
-  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 18px;
+  height: 18px;
   border-radius: 3px;
-  cursor: pointer;
   color: var(--text-muted);
-  transition: all 0.1s;
+  cursor: pointer;
 }
-.file-tree-action:hover { background: var(--bg-hover); color: var(--text-primary); }
 
-.file-tree-header {
+.file-tree-action:hover {
+  background: var(--bg-hover);
+  color: var(--accent-red);
+}
+
+.file-tree-toggle {
+  width: 14px;
+  height: 14px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 6px 12px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
+  justify-content: center;
+  transform: rotate(0deg);
+  transition: transform 0.15s;
+  flex-shrink: 0;
 }
 
-.file-tree-header-actions {
+.file-tree-toggle.open { transform: rotate(90deg); }
+
+.file-tree-children { padding-left: 0; }
+
+/* Collapsible sections in left panel */
+.collapsible-header {
   display: flex;
-  gap: 2px;
-}
-
-/* Sidebar Sections */
-.sidebar-section {
+  align-items: center;
+  gap: 6px;
   padding: 8px 12px;
-}
-
-.sidebar-section-title {
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-muted);
-  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+  border-top: 1px solid var(--border-subtle);
 }
 
-/* ========== EDITOR AREA ========== */
-.editor-area {
+.collapsible-header:hover { color: var(--text-primary); }
+
+.collapsible-header svg {
+  width: 10px;
+  height: 10px;
+  transition: transform 0.15s;
+}
+
+.collapsible-header.open svg { transform: rotate(90deg); }
+
+.collapsible-body {
+  display: none;
+  padding: 4px 12px 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.collapsible-body.open { display: block; }
+
+/* ---- Question mode left ---- */
+.question-input-wrap {
+  padding: 8px 10px;
+}
+
+.question-input {
+  width: 100%;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.question-input:focus { border-color: var(--accent-blue); }
+
+.quick-prompts {
+  padding: 4px 8px;
+}
+
+.quick-prompt {
+  display: block;
+  width: 100%;
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+
+.quick-prompt:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.chat-history {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;
+  padding: 4px 8px;
+}
+
+.chat-history-item {
+  padding: 6px 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  border-radius: 4px;
+  cursor: pointer;
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chat-history-item:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* ---- Agents mode left ---- */
+.agent-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 10px;
+  margin: 2px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.agent-card:hover {
+  background: var(--bg-hover);
+}
+
+.agent-card.selected {
+  background: var(--bg-active);
+  border: 1px solid var(--border);
+}
+
+.agent-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  background: var(--bg-tertiary);
+}
+
+.agent-info {
+  flex: 1;
   min-width: 0;
 }
 
-/* Editor Tabs */
-.editor-tabs {
+.agent-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.agent-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.agent-status {
   display: flex;
   align-items: center;
-  height: var(--tab-height);
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--border-primary);
-  overflow-x: auto;
+  gap: 4px;
+  font-size: 10px;
+  margin-top: 3px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   flex-shrink: 0;
 }
+
+.status-dot.idle { background: var(--text-muted); }
+.status-dot.running { background: var(--accent-orange); animation: pulse-dot 1.2s infinite; }
+.status-dot.complete { background: var(--accent-green); }
+.status-dot.connected { background: var(--accent-green); }
+.status-dot.disconnected { background: var(--text-muted); }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.create-agent-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 8px 10px;
+  padding: 7px;
+  border-radius: 6px;
+  border: 1px dashed var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s;
+}
+
+.create-agent-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+/* ---- Deploy mode left ---- */
+.deploy-service-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  margin: 1px 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.deploy-service-item:hover { background: var(--bg-hover); }
+
+.deploy-service-item.selected {
+  background: var(--bg-active);
+}
+
+.deploy-svc-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+  color: #fff;
+}
+
+.deploy-svc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.deploy-svc-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.deploy-svc-status {
+  font-size: 10px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 1px;
+}
+
+/* ========== MIDDLE COLUMN ========== */
+.middle-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Editor tab bar */
+.editor-tab-bar {
+  display: flex;
+  align-items: center;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  height: 34px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.editor-tab-bar::-webkit-scrollbar { height: 0; }
 
 .editor-tab {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   padding: 0 12px;
   height: 100%;
   font-size: 12px;
   color: var(--text-secondary);
   cursor: pointer;
-  border-right: 1px solid var(--border-primary);
+  border-right: 1px solid var(--border-subtle);
   white-space: nowrap;
-  transition: all 0.1s;
   flex-shrink: 0;
-  position: relative;
-}
-.editor-tab:hover { color: var(--text-primary); }
-.editor-tab.active {
-  color: var(--text-primary);
-  background: var(--bg-secondary);
-}
-.editor-tab.active::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--accent-blue);
+  transition: background 0.1s;
+  user-select: none;
 }
 
-.editor-tab-icon { font-size: 14px; }
+.editor-tab:hover {
+  background: var(--bg-hover);
+}
+
+.editor-tab.active {
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  border-bottom: 2px solid var(--accent-blue);
+}
+
+.editor-tab-icon {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
 .editor-tab-close {
-  width: 16px;
-  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 16px;
+  height: 16px;
   border-radius: 3px;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--text-muted);
   opacity: 0;
-  transition: all 0.1s;
-}
-.editor-tab:hover .editor-tab-close { opacity: 0.6; }
-.editor-tab-close:hover { opacity: 1 !important; background: var(--bg-hover); }
-
-.editor-tab-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--text-muted);
+  transition: opacity 0.1s;
 }
 
-/* Editor Container */
-.editor-container {
+.editor-tab:hover .editor-tab-close { opacity: 1; }
+.editor-tab-close:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+/* Run button in tab bar */
+.run-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  margin: 0 6px;
+  border-radius: 5px;
+  border: none;
+  background: var(--accent-green);
+  color: #000;
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.run-btn:hover { opacity: 0.85; }
+.run-btn svg { width: 12px; height: 12px; }
+
+/* Editor area */
+.editor-area {
   flex: 1;
-  overflow: hidden;
+  min-height: 0;
   position: relative;
 }
 
@@ -504,1225 +785,1027 @@ html, body {
   height: 100%;
 }
 
-/* ========== BOTTOM PANEL ========== */
-.bottom-panel {
-  height: var(--bottombar-height);
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-primary);
-  display: flex;
-  flex-direction: column;
+/* Console resize handle */
+.console-resize {
+  height: 3px;
+  background: var(--border);
+  cursor: ns-resize;
   flex-shrink: 0;
   position: relative;
-}
-
-.bottom-panel-resize {
-  position: absolute;
-  top: -3px;
-  left: 0;
-  right: 0;
-  height: 6px;
-  cursor: ns-resize;
   z-index: 10;
 }
-.bottom-panel-resize:hover { background: var(--accent-blue); opacity: 0.3; }
 
-.bottom-tabs {
+.console-resize:hover,
+.console-resize:active {
+  background: var(--accent-blue);
+}
+
+/* Console area */
+.console-area {
+  height: 220px;
+  min-height: 80px;
   display: flex;
-  align-items: center;
-  height: var(--tab-height);
-  border-bottom: 1px solid var(--border-primary);
-  padding: 0 8px;
-  flex-shrink: 0;
+  flex-direction: column;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border);
 }
 
-.bottom-tab {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  font-size: 12px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  transition: all 0.1s;
-}
-.bottom-tab:hover { color: var(--text-primary); }
-.bottom-tab.active { color: var(--text-primary); background: var(--bg-active); }
-
-.bottom-tab-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 600;
-}
-.bottom-tab-badge.error { background: var(--accent-red); color: #fff; }
-.bottom-tab-badge.warn { background: var(--accent-orange); color: #000; }
-
-.bottom-panel-content {
+.console-output {
   flex: 1;
-  overflow: auto;
-  padding: 8px 12px;
+  overflow-y: auto;
+  padding: 6px 12px;
   font-family: var(--font-mono);
   font-size: 12px;
   line-height: 1.6;
 }
 
-.bottom-panel-actions {
+.console-output::-webkit-scrollbar { width: 4px; }
+.console-output::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 4px; }
+
+.console-line { white-space: pre-wrap; word-break: break-all; }
+.console-line.cmd { color: var(--text-muted); }
+.console-line.log { color: var(--text-primary); }
+.console-line.warn { color: var(--accent-orange); }
+.console-line.error { color: var(--accent-red); }
+.console-line.info { color: var(--accent-blue); }
+.console-line.success { color: var(--accent-green); }
+
+.console-input-row {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-left: auto;
-}
-
-/* Terminal */
-.terminal-line {
-  display: flex;
-  gap: 8px;
-}
-
-.terminal-prompt {
-  color: var(--accent-green);
+  padding: 0 12px;
+  height: 32px;
+  border-top: 1px solid var(--border-subtle);
   flex-shrink: 0;
-  user-select: none;
+  background: var(--bg-secondary);
 }
 
-.terminal-input {
+.console-prompt {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-green);
+  margin-right: 6px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.console-input {
   flex: 1;
-  background: none;
   border: none;
+  background: transparent;
   color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 12px;
   outline: none;
-  caret-color: var(--accent-blue);
 }
 
-.terminal-output { color: var(--text-secondary); }
-.terminal-error { color: var(--accent-red); }
-.terminal-success { color: var(--accent-green); }
-.terminal-info { color: var(--accent-blue); }
-
-/* Output */
-.output-line { padding: 1px 0; }
-.output-log { color: var(--text-primary); }
-.output-warn { color: var(--accent-orange); }
-.output-error { color: var(--accent-red); }
-
-/* Problems */
-.problem-item {
+/* ========== RIGHT PANEL ========== */
+.right-panel {
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border);
+  overflow: hidden;
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 4px 0;
-  cursor: pointer;
-  transition: background 0.1s;
+  flex-direction: column;
+  min-width: 0;
 }
-.problem-item:hover { background: var(--bg-hover); }
-.problem-icon { flex-shrink: 0; margin-top: 2px; }
-.problem-message { color: var(--text-primary); }
-.problem-location { color: var(--text-muted); margin-left: auto; white-space: nowrap; }
 
-/* Transpiled */
-.transpiled-output {
-  white-space: pre-wrap;
+.right-mode-content {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.right-mode-content.active {
+  display: flex;
+}
+
+/* Right panel tab bar */
+.right-tab-bar {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.right-tab {
+  padding: 7px 12px;
+  font-size: 11.5px;
+  font-weight: 500;
   color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s;
+  user-select: none;
+}
+
+.right-tab:hover { color: var(--text-primary); }
+
+.right-tab.active {
+  color: var(--accent-blue);
+  border-bottom-color: var(--accent-blue);
+}
+
+.right-tab-content {
+  display: none;
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+
+.right-tab-content::-webkit-scrollbar { width: 4px; }
+.right-tab-content::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 4px; }
+
+.right-tab-content.active { display: block; }
+
+/* Transpiled code view */
+.transpiled-code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
   tab-size: 2;
 }
 
-/* ========== AI PANEL ========== */
-.ai-panel {
-  width: var(--ai-panel-width);
-  background: var(--bg-secondary);
-  border-left: 1px solid var(--border-primary);
+/* Problems list */
+.problem-item {
   display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  overflow: hidden;
-  transition: width 0.2s ease;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 5px 0;
+  font-size: 12px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
-.ai-panel.hidden { width: 0; border-left: none; }
+.problem-icon { flex-shrink: 0; font-size: 12px; margin-top: 1px; }
+.problem-message { flex: 1; color: var(--text-primary); }
+.problem-location { color: var(--text-muted); font-size: 11px; flex-shrink: 0; }
 
-.ai-panel-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border-primary);
-  flex-shrink: 0;
-}
-
-.ai-panel-header h3 {
-  font-size: 13px;
+/* Language reference table */
+.ref-section { margin-bottom: 16px; }
+.ref-section h4 {
+  font-size: 12px;
   font-weight: 600;
-  flex: 1;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
-.ai-panel-close {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-}
-.ai-panel-close:hover { background: var(--bg-hover); color: var(--text-primary); }
-
-.ai-quick-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border-primary);
-  flex-shrink: 0;
-}
-
-.ai-quick-btn {
-  padding: 4px 8px;
-  border-radius: 12px;
-  border: 1px solid var(--border-primary);
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
+.ref-table {
+  width: 100%;
   font-size: 11px;
-  font-family: var(--font-ui);
-  cursor: pointer;
-  transition: all 0.15s;
+  border-collapse: collapse;
 }
-.ai-quick-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
 
-.ai-messages {
+.ref-table th {
+  text-align: left;
+  padding: 3px 6px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ref-table td {
+  padding: 3px 6px;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.ref-table td:last-child {
+  font-family: var(--font-ui);
+  color: var(--text-secondary);
+}
+
+/* ---- Question mode right ---- */
+.ai-response-area {
   flex: 1;
   overflow-y: auto;
   padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
 
+.ai-response-area::-webkit-scrollbar { width: 4px; }
+.ai-response-area::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 4px; }
+
 .ai-message {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  margin-bottom: 14px;
 }
 
 .ai-message-header {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  margin-bottom: 6px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .ai-avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 10px;
   font-weight: 700;
+  flex-shrink: 0;
 }
-.ai-avatar.assistant { background: var(--accent-blue); color: #fff; }
-.ai-avatar.user { background: var(--accent-purple); color: #fff; }
+
+.ai-avatar.assistant { background: var(--accent-purple); color: #fff; }
+.ai-avatar.user { background: var(--accent-blue-dim); color: #fff; }
 
 .ai-message-content {
-  font-size: 12px;
+  font-size: 12.5px;
   line-height: 1.6;
-  color: var(--text-secondary);
-  padding-left: 26px;
-}
-
-.ai-message-content code {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  padding: 1px 4px;
-  border-radius: 3px;
-  background: var(--bg-tertiary);
-  color: var(--accent-blue);
+  color: var(--text-primary);
 }
 
 .ai-message-content pre {
   background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
   margin: 8px 0;
   overflow-x: auto;
+}
+
+.ai-message-content code {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 11.5px;
   line-height: 1.5;
 }
 
-.ai-input-area {
-  display: flex;
-  gap: 8px;
-  padding: 8px 12px;
-  border-top: 1px solid var(--border-primary);
-  flex-shrink: 0;
+/* ---- Agents mode right ---- */
+.agent-detail-panel {
+  padding: 12px;
+  overflow-y: auto;
+  flex: 1;
 }
 
-.ai-input {
+.agent-detail-panel::-webkit-scrollbar { width: 4px; }
+.agent-detail-panel::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 4px; }
+
+.agent-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.agent-detail-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background: var(--bg-tertiary);
+}
+
+.agent-detail-name {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.agent-config-section {
+  margin-bottom: 14px;
+}
+
+.agent-config-section h5 {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.agent-log-entry {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding: 3px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.agent-run-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent-blue-dim);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.agent-run-btn:hover { background: var(--accent-blue); }
+
+/* ---- Deploy mode right ---- */
+.deploy-config {
+  padding: 12px;
+  overflow-y: auto;
   flex: 1;
-  padding: 8px 10px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-primary);
+}
+
+.deploy-config::-webkit-scrollbar { width: 4px; }
+.deploy-config::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 4px; }
+
+.deploy-field {
+  margin-bottom: 12px;
+}
+
+.deploy-field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.deploy-field select,
+.deploy-field input {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-ui);
   font-size: 12px;
   outline: none;
-  resize: none;
-  min-height: 36px;
-  max-height: 120px;
-}
-.ai-input:focus { border-color: var(--accent-blue); }
-.ai-input::placeholder { color: var(--text-muted); }
-
-.ai-send-btn {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-md);
-  border: none;
-  background: var(--accent-blue);
-  color: #fff;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: opacity 0.15s;
-}
-.ai-send-btn:hover { opacity: 0.85; }
-
-/* ========== MODALS ========== */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.2s;
-}
-.modal-overlay.open { opacity: 1; visibility: visible; }
-
-.modal {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  width: 90%;
-  max-width: 800px;
-  max-height: 80vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: var(--shadow-lg);
-  transform: scale(0.96);
-  transition: transform 0.2s;
-}
-.modal-overlay.open .modal { transform: scale(1); }
-
-.modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-primary);
 }
 
-.modal-header h2 {
-  font-size: 16px;
-  font-weight: 600;
+.deploy-field select:focus,
+.deploy-field input:focus { border-color: var(--accent-blue); }
+
+.db-section {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
 }
 
-.modal-close {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  border: none;
-  background: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-size: 18px;
-}
-.modal-close:hover { background: var(--bg-hover); }
-
-.modal-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.modal-tabs {
-  display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border-primary);
-  padding: 0 20px;
-}
-
-.modal-tab {
-  padding: 10px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.15s;
-}
-.modal-tab:hover { color: var(--text-primary); }
-.modal-tab.active { color: var(--text-primary); border-bottom-color: var(--accent-blue); }
-
-/* Deploy Panel */
-.deploy-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-}
-
-.deploy-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: all 0.15s;
-}
-.deploy-card:hover { border-color: var(--accent-blue); }
-
-.deploy-card-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.deploy-card-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.deploy-card-name {
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.deploy-card-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-.status-dot.connected { background: var(--accent-green); }
-.status-dot.disconnected { background: var(--text-muted); }
-
-.deploy-card-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: auto;
-}
-
-.btn-sm {
-  padding: 5px 12px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-primary);
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-  font-size: 12px;
-  font-family: var(--font-ui);
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s;
-  flex: 1;
-  text-align: center;
-}
-.btn-sm:hover { background: var(--bg-hover); }
-.btn-sm.primary {
-  background: var(--accent-blue);
-  border-color: var(--accent-blue);
-  color: #fff;
-}
-.btn-sm.primary:hover { opacity: 0.9; }
-.btn-sm:disabled { opacity: 0.4; cursor: not-allowed; }
-
-/* Database cards */
 .db-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .db-card-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.db-card-name {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.db-card-status {
+  font-size: 10px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .db-input {
   width: 100%;
-  padding: 7px 10px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-primary);
+  padding: 5px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  outline: none;
+  margin-bottom: 4px;
+}
+
+.db-input:focus { border-color: var(--accent-blue); }
+
+.db-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.btn-sm:hover { background: var(--bg-hover); }
+
+.btn-sm.primary {
+  background: var(--accent-blue-dim);
+  border-color: var(--accent-blue-dim);
+  color: #fff;
+}
+
+.btn-sm.primary:hover { background: var(--accent-blue); }
+.btn-sm.primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.deploy-url {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-blue);
+  padding: 6px 10px;
+  background: var(--bg-primary);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  margin-top: 8px;
+  word-break: break-all;
+}
+
+.build-log {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-height: 180px;
+  overflow-y: auto;
+  background: var(--bg-primary);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  margin-top: 8px;
+}
+
+/* Env vars */
+.env-var-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+  align-items: center;
+}
+
+.env-var-row input {
+  flex: 1;
+  padding: 5px 8px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
   background: var(--bg-primary);
   color: var(--text-primary);
   font-family: var(--font-mono);
   font-size: 11px;
   outline: none;
 }
-.db-input:focus { border-color: var(--accent-blue); }
-.db-input::placeholder { color: var(--text-muted); }
 
-/* Settings */
-.settings-grid {
-  display: grid;
-  gap: 20px;
+.env-var-row input:focus { border-color: var(--accent-blue); }
+
+/* ========== STATUS BAR ========== */
+.status-bar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  height: var(--status-h);
+  font-size: 11px;
+  color: var(--text-secondary);
+  z-index: 100;
 }
 
-.setting-group h4 {
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.status-center {
+  flex: 1;
+  text-align: center;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.status-right a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.status-right a:hover { color: var(--accent-blue); }
+
+/* ========== RESIZE HANDLES ========== */
+.resize-handle-left {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 6px;
+  height: 100%;
+  cursor: ew-resize;
+  z-index: 50;
+}
+
+.resize-handle-right {
+  position: absolute;
+  top: 0;
+  left: -3px;
+  width: 6px;
+  height: 100%;
+  cursor: ew-resize;
+  z-index: 50;
+}
+
+/* ========== MODALS ========== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+}
+
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 580px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 {
   font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--text-primary);
+  font-weight: 700;
 }
 
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.modal-close:hover { background: var(--bg-hover); color: var(--text-primary); }
+
+.modal-body { padding: 16px; }
+
+/* Project grid */
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.project-card {
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.project-card:hover {
+  border-color: var(--accent-blue);
+  background: var(--bg-active);
+}
+
+.project-card-emoji { font-size: 24px; margin-bottom: 8px; }
+.project-card h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+.project-card p { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+
+/* Settings modal */
 .setting-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border-muted);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .setting-label {
-  font-size: 13px;
-  color: var(--text-secondary);
+  font-size: 12.5px;
+  font-weight: 500;
 }
 
 .setting-control select,
-.setting-control input[type="number"],
-.setting-control input[type="range"] {
+.setting-control input {
   padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-primary);
+  border-radius: 5px;
+  border: 1px solid var(--border);
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: var(--font-ui);
   font-size: 12px;
+  outline: none;
 }
 
-/* Toggle Switch */
-.toggle {
+.toggle-switch {
   width: 36px;
   height: 20px;
   border-radius: 10px;
   background: var(--bg-hover);
-  position: relative;
   cursor: pointer;
+  position: relative;
   transition: background 0.2s;
 }
-.toggle.on { background: var(--accent-blue); }
-.toggle::after {
+
+.toggle-switch.on { background: var(--accent-blue); }
+
+.toggle-switch::after {
   content: '';
   position: absolute;
-  top: 2px;
-  left: 2px;
   width: 16px;
   height: 16px;
   border-radius: 50%;
   background: #fff;
+  top: 2px;
+  left: 2px;
   transition: transform 0.2s;
 }
-.toggle.on::after { transform: translateX(16px); }
 
-/* ========== LANGUAGE REFERENCE ========== */
-.ref-panel {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 480px;
-  background: var(--bg-secondary);
-  border-left: 1px solid var(--border-primary);
-  z-index: 500;
-  display: flex;
-  flex-direction: column;
-  transform: translateX(100%);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: var(--shadow-lg);
-}
-.ref-panel.open { transform: translateX(0); }
+.toggle-switch.on::after { transform: translateX(16px); }
 
-.ref-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border-primary);
-}
-
-.ref-panel-header h3 { font-size: 14px; font-weight: 600; }
-
-.ref-panel-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-}
-
-.ref-section { margin-bottom: 24px; }
-.ref-section h4 {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--accent-blue);
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.ref-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-.ref-table th {
-  text-align: left;
-  padding: 6px 10px;
-  background: var(--bg-tertiary);
-  font-weight: 600;
-  font-size: 11px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.ref-table td {
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--border-muted);
-  font-family: var(--font-mono);
-  font-size: 11px;
-}
-
-/* ========== NEW PROJECT MODAL ========== */
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 12px;
-}
-
-.project-card {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-lg);
-  padding: 16px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.project-card:hover { border-color: var(--accent-blue); transform: translateY(-1px); }
-
-.project-card-emoji {
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-.project-card h4 {
-  font-size: 14px;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-.project-card p {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-/* ========== MOBILE WARNING ========== */
-.mobile-warning {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: var(--bg-primary);
-  z-index: 9999;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 40px;
-  gap: 16px;
-}
-.mobile-warning h2 { font-size: 20px; font-weight: 700; }
-.mobile-warning p { color: var(--text-secondary); max-width: 300px; }
-
-@media (max-width: 1023px) {
-  .mobile-warning { display: flex; }
-  #app { display: none; }
-}
-
-/* ========== LOADING / SPLASH ========== */
+/* ========== LOADING SPLASH ========== */
 .loading-splash {
   position: fixed;
   inset: 0;
   background: var(--bg-primary);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 10000;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 1000;
   transition: opacity 0.4s;
 }
+
 .loading-splash.hidden { opacity: 0; pointer-events: none; }
 
-.loading-logo {
-  width: 64px;
-  height: 64px;
-  margin-bottom: 24px;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-.loading-text {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.loading-bar {
-  width: 200px;
-  height: 2px;
-  background: var(--bg-tertiary);
-  border-radius: 1px;
-  margin-top: 16px;
-  overflow: hidden;
-}
-
-.loading-bar-fill {
-  height: 100%;
-  background: var(--accent-blue);
-  border-radius: 1px;
-  width: 0%;
-  transition: width 0.3s;
-  animation: loading-sweep 1.5s ease-in-out infinite;
-}
-
-@keyframes loading-sweep {
-  0% { width: 0%; margin-left: 0%; }
-  50% { width: 60%; margin-left: 20%; }
-  100% { width: 0%; margin-left: 100%; }
-}
-
-/* ========== FOOTER ========== */
-.ide-footer {
-  height: 22px;
-  background: var(--bg-tertiary);
-  border-top: 1px solid var(--border-primary);
-  display: flex;
-  align-items: center;
-  padding: 0 8px;
-  font-size: 11px;
-  color: var(--text-muted);
-  flex-shrink: 0;
-  justify-content: space-between;
-}
-
-.footer-left, .footer-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.footer-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  cursor: default;
-}
-
-.ide-footer a {
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-.ide-footer a:hover { color: var(--text-link); }
-
-/* ========== TYPING ANIMATION ========== */
-.typing-dots::after {
-  content: '';
-  animation: typing-dots 1.4s steps(4) infinite;
-}
-@keyframes typing-dots {
-  0% { content: ''; }
-  25% { content: '.'; }
-  50% { content: '..'; }
-  75% { content: '...'; }
-}
-
-/* Context menu */
-.context-menu {
-  position: fixed;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-primary);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  padding: 4px 0;
-  min-width: 160px;
-  z-index: 2000;
-  display: none;
-}
-.context-menu.show { display: block; }
-
-.context-menu-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  font-size: 12px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.1s;
-}
-.context-menu-item:hover {
-  background: var(--accent-blue);
-  color: #fff;
-}
-
-.context-menu-separator {
-  height: 1px;
-  background: var(--border-primary);
-  margin: 4px 0;
-}
-
-/* Connection flow */
-.connect-flow {
-  padding: 16px;
-  text-align: center;
-}
-.connect-flow-spinner {
+.loading-spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid var(--border-primary);
+  border: 3px solid var(--border);
   border-top-color: var(--accent-blue);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
-  margin: 0 auto 12px;
 }
+
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Select styling */
-.custom-select {
-  padding: 5px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-primary);
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: var(--font-ui);
-  font-size: 12px;
-  outline: none;
-  cursor: pointer;
+.loading-text {
+  font-size: 13px;
+  color: var(--text-secondary);
 }
-.custom-select:focus { border-color: var(--accent-blue); }
+
+/* ========== SCROLLBAR GLOBAL ========== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ========== TRANSITIONS ========== */
+.fade-in {
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 </style>
 </head>
 <body>
-
 <!-- Loading Splash -->
-<div class="loading-splash" id="loadingSplash">
-  <svg class="loading-logo" viewBox="0 0 64 64" fill="none">
-    <rect x="2" y="2" width="60" height="60" rx="12" stroke="#58a6ff" stroke-width="2"/>
-    <path d="M16 20L16 44" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M16 20L28 20" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M16 32L26 32" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M16 44L28 44" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round"/>
-    <circle cx="42" cy="32" r="10" stroke="#58a6ff" stroke-width="2.5"/>
-    <path d="M36 24L42 20" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-    <path d="M48 24L54 18" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-    <path d="M48 40L54 46" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-    <path d="M36 40L30 46" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
-  </svg>
-  <div class="loading-text">Initializing OmniLang IDE...</div>
-  <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+<div id="loadingSplash" class="loading-splash">
+  <div class="loading-spinner"></div>
+  <div class="loading-text">Loading OmniLang IDE...</div>
 </div>
 
-<!-- Mobile Warning -->
-<div class="mobile-warning">
-  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-    <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18" stroke-linecap="round" stroke-width="2"/>
-  </svg>
-  <h2>Desktop Recommended</h2>
-  <p>OmniLang IDE is designed for desktop screens (1024px+). Please open on a larger display for the best experience.</p>
-</div>
-
-<!-- Main App -->
-<div id="app">
-  <!-- Top Bar -->
-  <header class="topbar">
-    <div class="topbar-logo" onclick="window.OmniLang.showNewProject()" title="OmniLang IDE">
-      <svg viewBox="0 0 24 24" fill="none" aria-label="OmniLang Logo">
-        <rect x="1" y="1" width="22" height="22" rx="4" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M5.5 7L5.5 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M5.5 7L10.5 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M5.5 12L9.5 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        <path d="M5.5 17L10.5 17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="16" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
-        <line x1="13.5" y1="9" x2="11.5" y2="6" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
-        <line x1="18.5" y1="9" x2="20.5" y2="6" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
-        <line x1="18.5" y1="15" x2="20.5" y2="18" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+<div class="ide-root">
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="header-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
+        <line x1="12" y1="22" x2="12" y2="15.5"/>
+        <polyline points="22 8.5 12 15.5 2 8.5"/>
+        <polyline points="2 15.5 12 8.5 22 15.5"/>
+        <line x1="12" y1="2" x2="12" y2="8.5"/>
       </svg>
       <span>OmniLang</span>
     </div>
 
-    <div class="topbar-project">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.5a.25.25 0 01-.2-.1l-.9-1.2A1.75 1.75 0 004.6 1H1.75z"/></svg>
-      <input class="topbar-project-name" id="projectName" value="hello-world" spellcheck="false">
-    </div>
-
-    <div class="topbar-actions">
-      <button class="topbar-btn" onclick="window.OmniLang.showNewProject()" title="New Project">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a.75.75 0 01.75.75v4.5h4.5a.75.75 0 010 1.5h-4.5v4.5a.75.75 0 01-1.5 0v-4.5h-4.5a.75.75 0 010-1.5h4.5v-4.5A.75.75 0 018 2z"/></svg>
+    <div style="position:relative">
+      <button class="new-btn" onclick="window.OmniLang.toggleNewDropdown()">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a.75.75 0 01.75.75v4.5h4.5a.75.75 0 010 1.5h-4.5v4.5a.75.75 0 01-1.5 0v-4.5h-4.5a.75.75 0 010-1.5h4.5v-4.5A.75.75 0 018 2z"/></svg>
         New
       </button>
+      <div id="newDropdown" class="new-dropdown"></div>
+    </div>
 
-      <button class="topbar-btn run-btn" onclick="window.OmniLang.runCode()" title="Run (Ctrl+Enter)">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2l10 6-10 6z"/></svg>
-        Run
+    <div class="mode-tabs">
+      <button class="mode-tab" data-mode="question" onclick="window.OmniLang.switchMode('question')">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm9-3a1 1 0 00-2 0v1H6a.75.75 0 000 1.5h1V9a1 1 0 002 0V7.5h1a.75.75 0 000-1.5H9V5zm-1.281 5.997a1 1 0 112 0 1 1 0 01-2 0z"/></svg>
+        Question
       </button>
-
-      <button class="topbar-btn deploy-btn" onclick="window.OmniLang.showDeploy()" title="Deploy">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M10.41 2.02l3.58 3.58a.5.5 0 010 .71L6.7 13.6a.5.5 0 01-.23.13l-3.72.97a.5.5 0 01-.61-.61l.97-3.72a.5.5 0 01.13-.23L10.41 2.02a.5.5 0 01.71 0h-.71z"/></svg>
+      <button class="mode-tab active" data-mode="coding" onclick="window.OmniLang.switchMode('coding')">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 011.06 1.06L2.06 8l3.72 3.72a.75.75 0 11-1.06 1.06l-4.25-4.25a.75.75 0 010-1.06l4.25-4.25zm6.56 0a.75.75 0 10-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 101.06 1.06l4.25-4.25a.75.75 0 000-1.06l-4.25-4.25z"/></svg>
+        Coding
+      </button>
+      <button class="mode-tab" data-mode="agents" onclick="window.OmniLang.switchMode('agents')">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M10.5 2a.5.5 0 00-1 0v1h-3V2a.5.5 0 00-1 0v1H4a2 2 0 00-2 2v1h12V5a2 2 0 00-2-2h-1.5V2zM14 7H2v5a2 2 0 002 2h8a2 2 0 002-2V7zM5 9.5a.5.5 0 01.5-.5h2a.5.5 0 010 1h-2a.5.5 0 01-.5-.5zm0 2a.5.5 0 01.5-.5h5a.5.5 0 010 1h-5a.5.5 0 01-.5-.5z"/></svg>
+        Agents
+      </button>
+      <button class="mode-tab" data-mode="deploy" onclick="window.OmniLang.switchMode('deploy')">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a.75.75 0 01.53.22l2.5 2.5a.75.75 0 01-1.06 1.06L8.75 3.56V8a.75.75 0 01-1.5 0V3.56L6.03 4.78A.75.75 0 014.97 3.72l2.5-2.5A.75.75 0 018 1zM3.5 9.75a.75.75 0 00-1.5 0v1.5A2.75 2.75 0 004.75 14h6.5A2.75 2.75 0 0014 11.25v-1.5a.75.75 0 00-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5z"/></svg>
         Deploy
       </button>
+    </div>
 
-      <div class="topbar-separator"></div>
+    <div class="header-spacer"></div>
 
-      <button class="topbar-icon-btn" id="aiToggle" onclick="window.OmniLang.toggleAI()" title="AI Assistant (Ctrl+I)">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1.5A4.5 4.5 0 003.5 6c0 1.855.754 2.958 1.485 3.612.37.33.742.576 1.015.735V12.5a1 1 0 001 1h2a1 1 0 001-1v-2.153c.273-.159.644-.405 1.015-.735C11.746 8.958 12.5 7.855 12.5 6A4.5 4.5 0 008 1.5zM6.5 14a.5.5 0 000 1h3a.5.5 0 000-1h-3z"/></svg>
+    <div class="header-actions">
+      <button class="header-btn" onclick="window.OmniLang.toggleTheme()" title="Toggle theme">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 13V2a6 6 0 010 12z"/></svg>
       </button>
-
-      <button class="topbar-icon-btn" onclick="window.OmniLang.toggleRef()" title="Language Reference">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.75A.75.75 0 01.75 1h4.253c1.227 0 2.317.59 3 1.501A3.744 3.744 0 0111.006 1h4.245a.75.75 0 01.75.75v10.5a.75.75 0 01-.75.75h-4.507a2.25 2.25 0 00-1.591.659l-.622.621a.75.75 0 01-1.06 0l-.622-.621A2.25 2.25 0 005.258 13H.75a.75.75 0 01-.75-.75V1.75zm7.251 10.324c.444-.377.99-.662 1.586-.78V2.58c-.393-.207-.836-.33-1.316-.33H4.75A2.25 2.25 0 002.5 4.5v6.5h2.758c.608 0 1.201.146 1.735.426l.258.148zm1.498 0l.258-.148A3.73 3.73 0 0110.742 11h2.758V4.5a2.25 2.25 0 00-2.25-2.25h-2.77c-.48 0-.924.123-1.317.33v8.694c.596.118 1.142.403 1.586.78z"/></svg>
+      <button class="header-btn" onclick="window.OmniLang.showSettings()" title="Settings">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a1.5 1.5 0 00-1.5 1.5v.17A6.98 6.98 0 004.2 2.87l-.12-.12a1.5 1.5 0 00-2.12 2.12l.12.12A6.98 6.98 0 001.67 7.3H1.5a1.5 1.5 0 000 3h.17c.13.82.39 1.6.76 2.31l-.13.13a1.5 1.5 0 002.12 2.12l.13-.13c.71.37 1.49.63 2.31.76v.01a1.5 1.5 0 003 0v-.01c.82-.13 1.6-.39 2.31-.76l.13.13a1.5 1.5 0 002.12-2.12l-.13-.13c.37-.71.63-1.49.76-2.31h.01a1.5 1.5 0 000-3h-.01a6.98 6.98 0 00-.76-2.31l.13-.13a1.5 1.5 0 00-2.12-2.12l-.13.13A6.98 6.98 0 009.5 1.67V1.5A1.5 1.5 0 008 0zm0 5.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5z"/></svg>
       </button>
-
-      <button class="topbar-icon-btn" id="themeToggle" onclick="window.OmniLang.toggleTheme()" title="Toggle Theme">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 12a4 4 0 100-8 4 4 0 000 8zm0-1.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.06a.75.75 0 01-1.06 1.061l-1.06-1.06a.75.75 0 010-1.06zm8.192 8.192a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.06-1.06a.75.75 0 010-1.061zM0 8a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5H.75A.75.75 0 010 8zm13 0a.75.75 0 01.75-.75h1.5a.75.75 0 010 1.5h-1.5A.75.75 0 0113 8zM2.343 13.657a.75.75 0 010-1.06l1.06-1.061a.75.75 0 111.061 1.06l-1.06 1.061a.75.75 0 01-1.061 0zm8.192-8.192a.75.75 0 010-1.06l1.061-1.061a.75.75 0 011.06 1.06l-1.06 1.061a.75.75 0 01-1.06 0z"/></svg>
-      </button>
-
-      <button class="topbar-icon-btn" onclick="window.OmniLang.showSettings()" title="Settings">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M7.429 1.525a6.593 6.593 0 011.142 0c.036.003.108.036.137.146l.289 1.105c.147.56.55.967.997 1.189.174.086.341.183.501.29.417.278.97.423 1.53.27l1.102-.303c.11-.03.175.016.195.046.219.31.41.641.573.989.014.031.022.11-.059.19l-.815.806c-.411.406-.562.957-.53 1.456a4.588 4.588 0 010 .582c-.032.499.119 1.05.53 1.456l.815.806c.08.08.073.159.059.19a6.494 6.494 0 01-.573.99c-.02.029-.086.074-.195.045l-1.103-.303c-.559-.153-1.112-.008-1.529.27-.16.107-.327.204-.5.29-.449.222-.851.628-.998 1.189l-.289 1.105c-.029.11-.1.143-.137.146a6.613 6.613 0 01-1.142 0c-.036-.003-.108-.037-.137-.146l-.289-1.105c-.147-.56-.55-.967-.997-1.189a4.502 4.502 0 01-.501-.29c-.417-.278-.97-.423-1.53-.27l-1.102.303c-.11.03-.175-.016-.195-.046a6.492 6.492 0 01-.573-.989c-.014-.031-.022-.11.059-.19l.815-.806c.411-.406.562-.957.53-1.456a4.587 4.587 0 010-.582c.032-.499-.119-1.05-.53-1.456l-.815-.806c-.08-.08-.073-.159-.059-.19a6.44 6.44 0 01.573-.99c.02-.029.086-.074.195-.045l1.103.303c.559.153 1.112.008 1.529-.27.16-.107.327-.204.5-.29.449-.222.851-.628.998-1.189l.289-1.105c.029-.11.1-.143.137-.146zM8 6a2 2 0 100 4 2 2 0 000-4z"/></svg>
-      </button>
-
-      <div class="topbar-separator"></div>
-      <div class="user-avatar" title="Guest User">G</div>
+      <div class="avatar" title="User">U</div>
     </div>
   </header>
 
-  <!-- Main Area -->
-  <div class="main-area">
-    <!-- Left Sidebar -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-tabs">
-        <div class="sidebar-tab active" data-tab="explorer" onclick="window.OmniLang.switchSidebarTab('explorer')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.5a.25.25 0 01-.2-.1l-.9-1.2A1.75 1.75 0 004.6 1H1.75z"/></svg>
-          <span class="tab-label">Explorer</span>
-        </div>
-        <div class="sidebar-tab" data-tab="packages" onclick="window.OmniLang.switchSidebarTab('packages')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8.878.392a1.75 1.75 0 00-1.756 0l-5.25 3.045A1.75 1.75 0 001 4.951v6.098c0 .624.332 1.2.872 1.514l5.25 3.045a1.75 1.75 0 001.756 0l5.25-3.045c.54-.313.872-.89.872-1.514V4.951c0-.624-.332-1.2-.872-1.514L8.878.392zM7.875 1.69a.25.25 0 01.25 0l4.63 2.685L8 7.133 3.245 4.375l4.63-2.685zM2.5 5.677v5.372c0 .09.047.171.125.216l4.625 2.683V8.432L2.5 5.677zm6.25 8.271l4.625-2.683a.25.25 0 00.125-.216V5.677L8.75 8.432v5.516z"/></svg>
-          <span class="tab-label">Packages</span>
-        </div>
-        <div class="sidebar-tab" data-tab="deploy" onclick="window.OmniLang.switchSidebarTab('deploy')">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047z"/><path d="M7.25 8V5h1.5v3h-1.5zm0 3.5V10h1.5v1.5h-1.5z"/></svg>
-          <span class="tab-label">Deploy</span>
-        </div>
-        <div class="sidebar-tab" data-tab="settings" onclick="window.OmniLang.showSettings()">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M7.429 1.525a6.593 6.593 0 011.142 0c.036.003.108.036.137.146l.289 1.105c.147.56.55.967.997 1.189.174.086.341.183.501.29.417.278.97.423 1.53.27l1.102-.303c.11-.03.175.016.195.046.219.31.41.641.573.989.014.031.022.11-.059.19l-.815.806c-.411.406-.562.957-.53 1.456a4.588 4.588 0 010 .582c-.032.499.119 1.05.53 1.456l.815.806c.08.08.073.159.059.19a6.494 6.494 0 01-.573.99c-.02.029-.086.074-.195.045l-1.103-.303c-.559-.153-1.112-.008-1.529.27-.16.107-.327.204-.5.29-.449.222-.851.628-.998 1.189l-.289 1.105c-.029.11-.1.143-.137.146a6.613 6.613 0 01-1.142 0c-.036-.003-.108-.037-.137-.146l-.289-1.105c-.147-.56-.55-.967-.997-1.189a4.502 4.502 0 01-.501-.29c-.417-.278-.97-.423-1.53-.27l-1.102.303c-.11.03-.175-.016-.195-.046a6.492 6.492 0 01-.573-.989c-.014-.031-.022-.11.059-.19l.815-.806c.411-.406.562-.957.53-1.456a4.587 4.587 0 010-.582c.032-.499-.119-1.05-.53-1.456l-.815-.806c-.08-.08-.073-.159-.059-.19a6.44 6.44 0 01.573-.99c.02-.029.086-.074.195-.045l1.103.303c.559.153 1.112.008 1.529-.27.16-.107.327-.204.5-.29.449-.222.851-.628.998-1.189l.289-1.105c.029-.11.1-.143.137-.146zM8 6a2 2 0 100 4 2 2 0 000-4z"/></svg>
-          <span class="tab-label">Settings</span>
-        </div>
+  <!-- ============ LEFT PANEL ============ -->
+  <aside class="left-panel" id="leftPanel" style="position:relative">
+    <!-- Question Mode -->
+    <div class="left-mode-content" data-left-mode="question">
+      <div class="question-input-wrap">
+        <input class="question-input" id="questionSearchInput" placeholder="Ask a question..." spellcheck="false">
       </div>
-
-      <div class="sidebar-content" id="sidebarContent">
-        <!-- File Explorer (default) -->
-        <div id="explorerPanel">
-          <div class="file-tree-header">
-            <span id="explorerProjectName">HELLO-WORLD</span>
-            <div class="file-tree-header-actions">
-              <div class="file-tree-action" onclick="window.OmniLang.createFile()" title="New File">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a.75.75 0 01.75.75v4.5h4.5a.75.75 0 010 1.5h-4.5v4.5a.75.75 0 01-1.5 0v-4.5h-4.5a.75.75 0 010-1.5h4.5v-4.5A.75.75 0 018 2z"/></svg>
-              </div>
-              <div class="file-tree-action" onclick="window.OmniLang.createFolder()" title="New Folder">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.5a.25.25 0 01-.2-.1l-.9-1.2A1.75 1.75 0 004.6 1H1.75zM8 8a.75.75 0 01.75.75v1.5h1.5a.75.75 0 010 1.5h-1.5v1.5a.75.75 0 01-1.5 0v-1.5h-1.5a.75.75 0 010-1.5h1.5v-1.5A.75.75 0 018 8z"/></svg>
-              </div>
-            </div>
-          </div>
-          <div class="file-tree" id="fileTree"></div>
-        </div>
-
-        <!-- Packages Panel -->
-        <div id="packagesPanel" style="display:none">
-          <div class="sidebar-section">
-            <div class="sidebar-section-title">Installed Packages</div>
-            <div style="font-size:12px;color:var(--text-muted);padding:8px 0;">
-              <div style="display:flex;justify-content:space-between;padding:4px 0;color:var(--text-secondary)">omnilang-core <span style="color:var(--text-muted)">1.0.0</span></div>
-              <div style="display:flex;justify-content:space-between;padding:4px 0;color:var(--text-secondary)">omnilang-stdlib <span style="color:var(--text-muted)">1.0.0</span></div>
-              <div style="display:flex;justify-content:space-between;padding:4px 0;color:var(--text-secondary)">omnilang-http <span style="color:var(--text-muted)">0.3.2</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Deploy Panel -->
-        <div id="deploySidePanel" style="display:none">
-          <div class="sidebar-section">
-            <div class="sidebar-section-title">Quick Deploy</div>
-            <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">
-              <button class="btn-sm primary" onclick="window.OmniLang.showDeploy()" style="width:100%">Open Deploy Panel</button>
-            </div>
-            <div style="font-size:11px;color:var(--text-muted);margin-top:12px;">
-              Last deployed: Never
-            </div>
-          </div>
-        </div>
+      <div class="panel-section-header">Quick Prompts</div>
+      <div class="quick-prompts">
+        <button class="quick-prompt" onclick="window.OmniLang.quickPrompt('explain')">Explain this code</button>
+        <button class="quick-prompt" onclick="window.OmniLang.quickPrompt('fix')">Find &amp; fix bugs</button>
+        <button class="quick-prompt" onclick="window.OmniLang.quickPrompt('generate')">Generate a snippet</button>
+        <button class="quick-prompt" onclick="window.OmniLang.quickPrompt('refactor')">Refactor suggestions</button>
+        <button class="quick-prompt" onclick="window.OmniLang.quickPrompt('document')">Document this code</button>
       </div>
-    </aside>
+      <div class="panel-section-header">Previous Questions</div>
+      <div class="chat-history" id="chatHistory"></div>
+    </div>
 
-    <!-- Editor + Bottom Panel -->
+    <!-- Coding Mode (default) -->
+    <div class="left-mode-content active" data-left-mode="coding">
+      <div class="panel-section-header">
+        <span id="explorerProjectName">HELLO-WORLD</span>
+        <span style="display:flex;gap:2px">
+          <button onclick="window.OmniLang.createFile()" title="New File">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1.5a.25.25 0 00-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V6H9.75A1.75 1.75 0 018 4.25V1.5H1.75zM9.5 1.854V4.25c0 .138.112.25.25.25h2.396L9.5 1.854zM0 1.75C0 .784.784 0 1.75 0h6.586c.464 0 .909.184 1.237.513l3.914 3.914c.329.328.513.773.513 1.237v8.586A1.75 1.75 0 0112.25 16H1.75A1.75 1.75 0 010 14.25V1.75z"/></svg>
+          </button>
+          <button onclick="window.OmniLang.createFolder()" title="New Folder">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 1A1.75 1.75 0 000 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0016 13.25v-8.5A1.75 1.75 0 0014.25 3H7.5a.25.25 0 01-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1H1.75z"/></svg>
+          </button>
+        </span>
+      </div>
+      <div class="file-tree" id="fileTree"></div>
+      <div class="collapsible-header" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 4l4 4-4 4z"/></svg>
+        Packages
+      </div>
+      <div class="collapsible-body">
+        <div style="color:var(--text-muted);font-size:11px">No packages installed</div>
+      </div>
+      <div class="collapsible-header" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 4l4 4-4 4z"/></svg>
+        Settings
+      </div>
+      <div class="collapsible-body">
+        <div style="color:var(--text-muted);font-size:11px">Project settings</div>
+      </div>
+    </div>
+
+    <!-- Agents Mode -->
+    <div class="left-mode-content" data-left-mode="agents">
+      <div class="panel-section-header">AI Agents</div>
+      <div id="agentsList"></div>
+      <button class="create-agent-btn" onclick="window.OmniLang.createCustomAgent()">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a.75.75 0 01.75.75v4.5h4.5a.75.75 0 010 1.5h-4.5v4.5a.75.75 0 01-1.5 0v-4.5h-4.5a.75.75 0 010-1.5h4.5v-4.5A.75.75 0 018 2z"/></svg>
+        Create Custom Agent
+      </button>
+    </div>
+
+    <!-- Deploy Mode -->
+    <div class="left-mode-content" data-left-mode="deploy">
+      <div class="panel-section-header">Active Deployment</div>
+      <div style="padding:4px 12px 8px;font-size:11px;color:var(--text-muted)">No active deployment</div>
+      <div class="panel-section-header">Hosting Services</div>
+      <div id="deployServicesList"></div>
+    </div>
+
+    <div class="resize-handle-left" id="leftResizeHandle"></div>
+  </aside>
+
+  <!-- ============ MIDDLE COLUMN ============ -->
+  <main class="middle-col">
+    <!-- Editor tab bar -->
+    <div class="editor-tab-bar">
+      <div id="editorTabs" style="display:flex;flex:1;overflow-x:auto"></div>
+      <button class="run-btn" onclick="window.OmniLang.runCode()" title="Run (Ctrl+Enter)">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2l10 6-10 6z"/></svg>
+        Run
+      </button>
+    </div>
+
+    <!-- Monaco Editor -->
     <div class="editor-area">
-      <!-- Editor Tabs -->
-      <div class="editor-tabs" id="editorTabs"></div>
+      <div id="monaco-editor"></div>
+    </div>
 
-      <!-- Monaco Editor Container -->
-      <div class="editor-container" id="editorContainer">
-        <div id="monaco-editor"></div>
+    <!-- Console resize handle -->
+    <div class="console-resize" id="consoleResize"></div>
+
+    <!-- Console -->
+    <div class="console-area" id="consoleArea">
+      <div class="console-output" id="consoleOutput"></div>
+      <div class="console-input-row">
+        <span class="console-prompt">omnilang&gt;</span>
+        <input class="console-input" id="consoleInput" spellcheck="false" autocomplete="off" placeholder="Type a command or OmniLang expression...">
       </div>
+    </div>
+  </main>
 
-      <!-- Bottom Panel -->
-      <div class="bottom-panel" id="bottomPanel">
-        <div class="bottom-panel-resize" id="bottomResize"></div>
-        <div class="bottom-tabs">
-          <div class="bottom-tab active" data-tab="terminal" onclick="window.OmniLang.switchBottomTab('terminal')">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M0 2.75C0 1.784.784 1 1.75 1h12.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0114.25 15H1.75A1.75 1.75 0 010 13.25V2.75zm1.75-.25a.25.25 0 00-.25.25v10.5c0 .138.112.25.25.25h12.5a.25.25 0 00.25-.25V2.75a.25.25 0 00-.25-.25H1.75zM7 11.5a.75.75 0 01-.75-.75V8.56L4.22 6.53a.75.75 0 011.06-1.06l2.5 2.5a.75.75 0 010 1.06l-2.5 2.5A.75.75 0 014.22 12.53L6.25 10.5H7v1zM8.75 10h3.5a.75.75 0 010 1.5h-3.5a.75.75 0 010-1.5z"/></svg>
-            Terminal
-          </div>
-          <div class="bottom-tab" data-tab="output" onclick="window.OmniLang.switchBottomTab('output')">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 9.5a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/><path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0z"/></svg>
-            Output
-          </div>
-          <div class="bottom-tab" data-tab="problems" onclick="window.OmniLang.switchBottomTab('problems')">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754z"/></svg>
-            Problems
-            <span class="bottom-tab-badge error" id="problemCount" style="display:none">0</span>
-          </div>
-          <div class="bottom-tab" data-tab="transpiled" onclick="window.OmniLang.switchBottomTab('transpiled')">
-            <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4.72 3.22a.75.75 0 011.06 1.06L2.06 8l3.72 3.72a.75.75 0 11-1.06 1.06l-4.25-4.25a.75.75 0 010-1.06l4.25-4.25zm6.56 0a.75.75 0 10-1.06 1.06L13.94 8l-3.72 3.72a.75.75 0 101.06 1.06l4.25-4.25a.75.75 0 000-1.06l-4.25-4.25z"/></svg>
-            Transpiled
-          </div>
-          <div class="bottom-panel-actions">
-            <button class="topbar-icon-btn" onclick="window.OmniLang.clearOutput()" title="Clear">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 01-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="bottom-panel-content" id="bottomContent">
-          <div id="terminalPanel">
-            <div class="terminal-output terminal-info">Welcome to OmniLang REPL v1.0.0</div>
-            <div class="terminal-output terminal-info">Type OmniLang code and press Enter to evaluate.</div>
-            <div class="terminal-output" style="margin-bottom:4px">---</div>
-            <div class="terminal-line">
-              <span class="terminal-prompt">omnilang&gt;</span>
-              <input class="terminal-input" id="terminalInput" spellcheck="false" autocomplete="off">
-            </div>
-          </div>
-          <div id="outputPanel" style="display:none"></div>
-          <div id="problemsPanel" style="display:none"></div>
-          <div id="transpiledPanel" style="display:none"><pre class="transpiled-output" id="transpiledOutput"></pre></div>
-        </div>
+  <!-- ============ RIGHT PANEL ============ -->
+  <aside class="right-panel" id="rightPanel" style="position:relative">
+    <div class="resize-handle-right" id="rightResizeHandle"></div>
+
+    <!-- Question Mode Right -->
+    <div class="right-mode-content" data-right-mode="question">
+      <div class="panel-section-header">AI Response</div>
+      <div class="ai-response-area" id="aiMessages"></div>
+    </div>
+
+    <!-- Coding Mode Right -->
+    <div class="right-mode-content active" data-right-mode="coding">
+      <div class="right-tab-bar">
+        <div class="right-tab active" data-rtab="transpiled" onclick="window.OmniLang.switchRightTab('transpiled')">Transpiled</div>
+        <div class="right-tab" data-rtab="problems" onclick="window.OmniLang.switchRightTab('problems')">Problems</div>
+        <div class="right-tab" data-rtab="langref" onclick="window.OmniLang.switchRightTab('langref')">Language Ref</div>
+      </div>
+      <div class="right-tab-content active" data-rtab-content="transpiled">
+        <pre class="transpiled-code" id="transpiledOutput">// Transpiled JavaScript output appears here</pre>
+      </div>
+      <div class="right-tab-content" data-rtab-content="problems">
+        <div id="problemsPanel" style="color:var(--text-muted);font-size:12px">No problems detected.</div>
+      </div>
+      <div class="right-tab-content" data-rtab-content="langref">
+        <div id="refContent"></div>
       </div>
     </div>
 
-    <!-- AI Assistant Panel -->
-    <aside class="ai-panel hidden" id="aiPanel">
-      <div class="ai-panel-header">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--accent-blue)"><path d="M8 1.5A4.5 4.5 0 003.5 6c0 1.855.754 2.958 1.485 3.612.37.33.742.576 1.015.735V12.5a1 1 0 001 1h2a1 1 0 001-1v-2.153c.273-.159.644-.405 1.015-.735C11.746 8.958 12.5 7.855 12.5 6A4.5 4.5 0 008 1.5zM6.5 14a.5.5 0 000 1h3a.5.5 0 000-1h-3z"/></svg>
-        <h3>AI Assistant</h3>
-        <button class="ai-panel-close" onclick="window.OmniLang.toggleAI()">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 01-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"/></svg>
-        </button>
+    <!-- Agents Mode Right -->
+    <div class="right-mode-content" data-right-mode="agents">
+      <div id="agentDetailPanel" class="agent-detail-panel">
+        <div style="color:var(--text-muted);font-size:12px;padding:20px 0;text-align:center">Select an agent from the left panel</div>
       </div>
-      <div class="ai-quick-actions">
-        <button class="ai-quick-btn" onclick="window.OmniLang.aiAction('explain')">Explain Code</button>
-        <button class="ai-quick-btn" onclick="window.OmniLang.aiAction('fix')">Fix Error</button>
-        <button class="ai-quick-btn" onclick="window.OmniLang.aiAction('generate')">Generate</button>
-        <button class="ai-quick-btn" onclick="window.OmniLang.aiAction('refactor')">Refactor</button>
-        <button class="ai-quick-btn" onclick="window.OmniLang.aiAction('document')">Document</button>
-      </div>
-      <div class="ai-messages" id="aiMessages">
-        <div class="ai-message">
-          <div class="ai-message-header">
-            <div class="ai-avatar assistant">AI</div>
-            <span>OmniLang Assistant</span>
-          </div>
-          <div class="ai-message-content">
-            Welcome! I'm your OmniLang coding assistant. I can help you write, debug, and optimize OmniLang code. Try the quick actions above or ask me anything.
-          </div>
-        </div>
-      </div>
-      <div class="ai-input-area">
-        <textarea class="ai-input" id="aiInput" placeholder="Ask about your code..." rows="1"></textarea>
-        <button class="ai-send-btn" onclick="window.OmniLang.sendAIMessage()">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M.989 2.524a.75.75 0 01.87-.273l12.5 4.5a.75.75 0 010 1.398l-12.5 4.5A.75.75 0 01.5 11.9V9.553a.75.75 0 01.596-.735L7.75 7.5 1.096 6.182A.75.75 0 01.5 5.447V3.1a.75.75 0 01.489-.576z"/></svg>
-        </button>
-      </div>
-    </aside>
-  </div>
-
-  <!-- Status Bar / Footer -->
-  <footer class="ide-footer">
-    <div class="footer-left">
-      <span class="footer-item" id="footerLang">OmniLang</span>
-      <span class="footer-item" id="footerEncoding">UTF-8</span>
-      <span class="footer-item" id="footerCursor">Ln 1, Col 1</span>
     </div>
-    <div class="footer-right">
-      <span class="footer-item" id="footerStatus">Ready</span>
+
+    <!-- Deploy Mode Right -->
+    <div class="right-mode-content" data-right-mode="deploy">
+      <div class="deploy-config" id="deployConfigPanel">
+        <div style="color:var(--text-muted);font-size:12px;padding:20px 0;text-align:center">Select a hosting service to configure deployment</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ STATUS BAR ============ -->
+  <footer class="status-bar">
+    <div class="status-left">
+      <span id="footerMode">Coding</span>
+      <span id="footerLang">OmniLang</span>
+      <span id="footerCursor">Ln 1, Col 1</span>
+    </div>
+    <div class="status-center">OmniLang v1.0</div>
+    <div class="status-right">
+      <span id="footerStatus">Ready</span>
       <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
     </div>
   </footer>
 </div>
 
-<!-- Deploy Modal -->
-<div class="modal-overlay" id="deployModal">
-  <div class="modal" style="max-width:900px;">
+<!-- ============ MODALS ============ -->
+
+<!-- New Project Modal -->
+<div class="modal-overlay" id="newProjectModal">
+  <div class="modal">
     <div class="modal-header">
-      <h2>Deploy & Connect</h2>
-      <button class="modal-close" onclick="window.OmniLang.closeDeploy()">&times;</button>
+      <h3>New Project</h3>
+      <button class="modal-close" onclick="document.getElementById('newProjectModal').classList.remove('open')">&times;</button>
     </div>
-    <div class="modal-tabs">
-      <div class="modal-tab active" data-dtab="hosting" onclick="window.OmniLang.switchDeployTab('hosting')">Hosting</div>
-      <div class="modal-tab" data-dtab="databases" onclick="window.OmniLang.switchDeployTab('databases')">Databases</div>
-      <div class="modal-tab" data-dtab="env" onclick="window.OmniLang.switchDeployTab('env')">Environment</div>
+    <div class="modal-body">
+      <div class="project-grid" id="projectGrid"></div>
     </div>
-    <div class="modal-body" id="deployModalBody"></div>
   </div>
 </div>
 
 <!-- Settings Modal -->
 <div class="modal-overlay" id="settingsModal">
-  <div class="modal" style="max-width:600px;">
+  <div class="modal">
     <div class="modal-header">
-      <h2>Settings</h2>
+      <h3>Settings</h3>
       <button class="modal-close" onclick="document.getElementById('settingsModal').classList.remove('open')">&times;</button>
     </div>
     <div class="modal-body">
-      <div class="settings-grid">
-        <div class="setting-group">
-          <h4>Editor</h4>
-          <div class="setting-row">
-            <span class="setting-label">Font Size</span>
-            <div class="setting-control"><select class="custom-select" onchange="window.OmniLang.updateSetting('fontSize', this.value)"><option value="12">12px</option><option value="13">13px</option><option value="14" selected>14px</option><option value="15">15px</option><option value="16">16px</option><option value="18">18px</option></select></div>
-          </div>
-          <div class="setting-row">
-            <span class="setting-label">Tab Size</span>
-            <div class="setting-control"><select class="custom-select" onchange="window.OmniLang.updateSetting('tabSize', this.value)"><option value="2" selected>2 spaces</option><option value="4">4 spaces</option></select></div>
-          </div>
-          <div class="setting-row">
-            <span class="setting-label">Minimap</span>
-            <div class="setting-control"><div class="toggle on" id="minimapToggle" onclick="window.OmniLang.toggleSetting('minimap', this)"></div></div>
-          </div>
-          <div class="setting-row">
-            <span class="setting-label">Word Wrap</span>
-            <div class="setting-control"><div class="toggle" id="wordWrapToggle" onclick="window.OmniLang.toggleSetting('wordWrap', this)"></div></div>
-          </div>
+      <div class="setting-row">
+        <span class="setting-label">Font Size</span>
+        <div class="setting-control">
+          <select onchange="window.OmniLang.updateSetting('fontSize', this.value)">
+            <option value="12">12px</option>
+            <option value="13">13px</option>
+            <option value="14" selected>14px</option>
+            <option value="15">15px</option>
+            <option value="16">16px</option>
+            <option value="18">18px</option>
+          </select>
         </div>
-        <div class="setting-group">
-          <h4>AI Assistant</h4>
-          <div class="setting-row">
-            <span class="setting-label">Model</span>
-            <div class="setting-control"><select class="custom-select"><option>OmniLang GPT-4o</option><option>OmniLang Claude</option><option>OmniLang Gemini</option></select></div>
-          </div>
-          <div class="setting-row">
-            <span class="setting-label">Temperature</span>
-            <div class="setting-control"><input type="range" min="0" max="100" value="30" style="width:80px"></div>
-          </div>
-          <div class="setting-row">
-            <span class="setting-label">Auto-complete</span>
-            <div class="setting-control"><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-          </div>
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">Tab Size</span>
+        <div class="setting-control">
+          <select onchange="window.OmniLang.updateSetting('tabSize', this.value)">
+            <option value="2" selected>2 spaces</option>
+            <option value="4">4 spaces</option>
+          </select>
         </div>
-        <div class="setting-group">
-          <h4>Deployment</h4>
-          <div class="setting-row">
-            <span class="setting-label">Default Platform</span>
-            <div class="setting-control"><select class="custom-select"><option>Vercel</option><option>Netlify</option><option>Railway</option><option>DigitalOcean</option></select></div>
-          </div>
-          <div class="setting-row">
-            <span class="setting-label">Auto Deploy on Save</span>
-            <div class="setting-control"><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
-          </div>
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">Minimap</span>
+        <div class="setting-control">
+          <div class="toggle-switch on" onclick="window.OmniLang.toggleSetting('minimap', this)"></div>
+        </div>
+      </div>
+      <div class="setting-row">
+        <span class="setting-label">Word Wrap</span>
+        <div class="setting-control">
+          <div class="toggle-switch" onclick="window.OmniLang.toggleSetting('wordWrap', this)"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- New Project Modal -->
-<div class="modal-overlay" id="newProjectModal">
-  <div class="modal" style="max-width:700px;">
-    <div class="modal-header">
-      <h2>New Project</h2>
-      <button class="modal-close" onclick="document.getElementById('newProjectModal').classList.remove('open')">&times;</button>
-    </div>
-    <div class="modal-body">
-      <p style="color:var(--text-secondary);margin-bottom:16px;font-size:13px;">Choose a template to get started, or create a blank project.</p>
-      <div class="project-grid" id="projectGrid"></div>
-    </div>
-  </div>
-</div>
+<!-- Hidden project name input -->
+<input type="hidden" id="projectName" value="hello-world">
 
-<!-- Language Reference Panel -->
-<div class="ref-panel" id="refPanel">
-  <div class="ref-panel-header">
-    <h3>OmniLang Reference</h3>
-    <button class="ai-panel-close" onclick="window.OmniLang.toggleRef()">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 01-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z"/></svg>
-    </button>
-  </div>
-  <div class="ref-panel-content" id="refContent"></div>
-</div>
-
-<!-- Context Menu -->
-<div class="context-menu" id="contextMenu"></div>
-
-<!-- Monaco Editor CDN -->
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.45.0/min/vs/loader.js"></script>
-<script src="./app.js" defer></script>
+<script src="app.js"></script>
 </body>
 </html>
