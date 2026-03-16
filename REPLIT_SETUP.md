@@ -1,8 +1,10 @@
-# OmniLang IDE — Replit Setup Prompt
+# Matt — Macro Tech Titan AI: Replit Setup Prompt
 
 ## Overview
 
-Convert the OmniLang IDE from a static HTML/JS demo into a full-stack production application on Replit. OmniLang is a master superset programming language that extends JavaScript with syntax from Python, Go, Rust, C#, and Java. The platform includes an online IDE with Monaco editor, AI coding assistant, one-click deployment panel, and an admin backend.
+Convert the Matt (Macro Tech Titan AI) platform from a static HTML/JS prototype into a full-stack production application on Replit. Matt is a **Super Framework for Coding, Agents, and Deployment** — a meta framework that works with any API, any programming language, and any LLM. The platform centers on **3 core modes: Coding (Build), Chat (AI), and Deploy (Ship)**, plus a comprehensive integrations page for connecting external services.
+
+Build on top of the existing codebase in the GitHub repo.
 
 ---
 
@@ -20,7 +22,31 @@ The repo currently has:
 
 ---
 
-## Step 2: Convert to Full-Stack Architecture
+## Step 2: Rebrand from OmniLang to Matt
+
+Throughout the entire codebase, rebrand:
+- **Product name:** "OmniLang" → "Matt" (short name) or "Macro Tech Titan AI" (full name)
+- **Tagline:** "The Super Framework for Coding, Agents, and Deployment"
+- **Description:** "A Meta Framework that works with any API, any programming language, any LLM"
+- **Logo text:** "Matt" with subtitle "by Macro Tech Titan"
+- **AI assistant persona:** Rename from "OmniLang AI" to "Matt AI"
+- **Page title:** "Matt — Macro Tech Titan AI"
+- **File extension:** Keep `.ol` for OmniLang files, but the language can also be referred to as "Matt Script" or just the source language (Python, JS, etc.)
+
+### Rebrand checklist:
+- [ ] HTML `<title>` and meta tags
+- [ ] Header logo and text
+- [ ] Login/signup page headings and welcome text
+- [ ] AI system prompts
+- [ ] README and documentation
+- [ ] Console welcome message
+- [ ] Settings page references
+- [ ] Admin panel branding
+- [ ] Error messages and notifications
+
+---
+
+## Step 3: Convert to Full-Stack Architecture
 
 Restructure the project into a proper full-stack app using the following tech stack:
 
@@ -41,7 +67,7 @@ Restructure the project into a proper full-stack app using the following tech st
 ### Target Project Structure
 
 ```
-OmniLang/
+Matt/
 ├── .replit                     # Replit run configuration
 ├── replit.nix                  # Nix packages (Node 20, PostgreSQL client)
 ├── package.json
@@ -62,9 +88,10 @@ OmniLang/
 │   │   ├── connection.ts       # Neon PostgreSQL connection
 │   │   └── seed.ts             # Seed script for demo data
 │   ├── services/
-│   │   ├── transpiler.ts       # OmniLang transpiler (port from app.js)
-│   │   ├── ai-assistant.ts     # AI integration (OpenAI API)
-│   │   ├── deployment.ts       # Deployment service (DigitalOcean, Vercel APIs)
+│   │   ├── transpiler.ts       # Multi-language transpiler (port from app.js)
+│   │   ├── ai-assistant.ts     # AI integration (any LLM via OpenAI-compatible API)
+│   │   ├── deployment.ts       # Deployment service (multi-platform)
+│   │   ├── integrations.ts     # Integration registry and connection management
 │   │   └── file-system.ts      # Per-user project file storage
 │   └── types.ts                # Shared TypeScript types
 │
@@ -76,21 +103,22 @@ OmniLang/
 │   │   │
 │   │   ├── components/
 │   │   │   ├── Layout.tsx           # 3-column IDE layout shell
-│   │   │   ├── Header.tsx           # Top bar with mode tabs
+│   │   │   ├── Header.tsx           # Top bar with 3 mode tabs
 │   │   │   ├── StatusBar.tsx        # Bottom status bar
 │   │   │   ├── LeftPanel.tsx        # Left sidebar (content per mode)
 │   │   │   ├── RightPanel.tsx       # Right sidebar (content per mode)
 │   │   │   ├── EditorPanel.tsx      # Monaco editor wrapper
 │   │   │   ├── ConsolePanel.tsx     # Bottom console with REPL
 │   │   │   ├── FileExplorer.tsx     # File tree component
-│   │   │   ├── AIChat.tsx           # AI assistant chat panel
-│   │   │   ├── AgentCards.tsx       # AI agents list
+│   │   │   ├── AIChat.tsx           # AI chat panel (Chat mode)
 │   │   │   ├── DeployPanel.tsx      # Deployment services
+│   │   │   ├── IntegrationsPage.tsx # Full integrations marketplace
 │   │   │   └── ResizeHandle.tsx     # Panel resize handles
 │   │   │
 │   │   ├── pages/
 │   │   │   ├── LoginPage.tsx        # Login/Signup
-│   │   │   ├── IDEPage.tsx          # Main IDE view
+│   │   │   ├── IDEPage.tsx          # Main IDE view (3 modes)
+│   │   │   ├── IntegrationsPage.tsx # Integrations marketplace
 │   │   │   ├── SettingsPage.tsx     # User settings
 │   │   │   ├── admin/
 │   │   │   │   ├── AdminLayout.tsx  # Admin shell with sidebar
@@ -98,6 +126,7 @@ OmniLang/
 │   │   │   │   ├── Users.tsx        # User management table
 │   │   │   │   ├── Projects.tsx     # All projects table
 │   │   │   │   ├── Deployments.tsx  # Deployment logs
+│   │   │   │   ├── Integrations.tsx # Integration usage analytics
 │   │   │   │   ├── PlatformSettings.tsx  # Site config
 │   │   │   │   ├── Billing.tsx      # Plan/revenue management
 │   │   │   │   ├── FeatureFlags.tsx # Feature toggles
@@ -107,11 +136,12 @@ OmniLang/
 │   │   │   ├── useAuth.ts          # Auth context + session management
 │   │   │   ├── useEditor.ts        # Monaco editor state
 │   │   │   ├── useTranspiler.ts    # Transpiler hook
+│   │   │   ├── useIntegrations.ts  # Integration connection state
 │   │   │   └── useApi.ts           # API request helpers
 │   │   │
 │   │   ├── lib/
 │   │   │   ├── transpiler.ts       # Client-side transpiler (real-time preview)
-│   │   │   ├── omnilang-monarch.ts # Monaco language definition for OmniLang
+│   │   │   ├── matt-monarch.ts     # Monaco language definition for Matt Script
 │   │   │   └── api-client.ts       # Typed fetch wrapper
 │   │   │
 │   │   └── types.ts                # Frontend type definitions
@@ -124,7 +154,7 @@ OmniLang/
 
 ---
 
-## Step 3: Database Schema (Drizzle ORM + Neon PostgreSQL)
+## Step 4: Database Schema (Drizzle ORM + Neon PostgreSQL)
 
 Create the following tables using Drizzle ORM with `drizzle-orm/neon-http`:
 
@@ -162,6 +192,7 @@ export const users = pgTable("users", {
   githubUsername: varchar("github_username", { length: 255 }),
   vercelConnected: boolean("vercel_connected").default(false),
   digitaloceanConnected: boolean("digitalocean_connected").default(false),
+  renderConnected: boolean("render_connected").default(false),
   isActive: boolean("is_active").default(true),
   lastActiveAt: timestamp("last_active_at"),
   createdAt: timestamp("created_at").defaultNow(),
@@ -173,6 +204,7 @@ export const projects = pgTable("projects", {
   userId: integer("user_id").notNull().references(() => users.id),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
+  language: varchar("language", { length: 50 }).default("matt"),  // "matt" | "python" | "javascript" | "typescript" | "go" | "rust" etc.
   files: jsonb("files").default({}),             // Virtual filesystem: { "main.ol": "code...", "utils.ol": "..." }
   activeFile: varchar("active_file", { length: 255 }).default("main.ol"),
   template: varchar("template", { length: 50 }),  // "hello-world" | "todo-app" | "api-client" | "data-processing"
@@ -200,7 +232,7 @@ export const dbConnections = pgTable("db_connections", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull().references(() => users.id),
   projectId: integer("project_id").references(() => projects.id),
-  dbType: varchar("db_type", { length: 50 }).notNull(),  // "postgresql" | "mongodb" | "mysql" | "redis" | "sqlite" | "firebase"
+  dbType: varchar("db_type", { length: 50 }).notNull(),  // "postgresql" | "mongodb" | "mysql" | "redis" | "sqlite" | "firebase" | "supabase" | "planetscale"
   connectionString: text("connection_string"),
   label: varchar("label", { length: 255 }),
   isConnected: boolean("is_connected").default(false),
@@ -215,6 +247,7 @@ export const aiChats = pgTable("ai_chats", {
   role: varchar("role", { length: 20 }).notNull(),   // "user" | "assistant"
   content: text("content").notNull(),
   model: varchar("model", { length: 50 }),
+  provider: varchar("provider", { length: 50 }),       // "openai" | "anthropic" | "google" | "meta" | "mistral" | "custom"
   tokensUsed: integer("tokens_used"),
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -230,6 +263,18 @@ export const agents = pgTable("agents", {
   status: varchar("status", { length: 20 }).default("idle"),  // "idle" | "running" | "complete" | "error"
   lastRunAt: timestamp("last_run_at"),
   lastResult: text("last_result"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// ---- INTEGRATIONS (user connections to external services) ----
+export const integrations = pgTable("integrations", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  serviceId: varchar("service_id", { length: 100 }).notNull(),  // e.g. "github", "vercel", "render", "sendgrid"
+  category: varchar("category", { length: 50 }).notNull(),       // "hosting" | "database" | "ai" | "email" | "analytics" | "storage" | "ci-cd" | "monitoring" | "communication" | "payment" | "auth"
+  status: varchar("status", { length: 20 }).default("disconnected"),  // "connected" | "disconnected" | "error"
+  config: jsonb("config").default({}),           // Service-specific config (tokens, project IDs, etc.)
+  lastSyncAt: timestamp("last_sync_at"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -257,7 +302,7 @@ export const activityLog = pgTable("activity_log", {
   userId: integer("user_id").references(() => users.id),
   action: varchar("action", { length: 255 }).notNull(),
   details: text("details"),
-  category: varchar("category", { length: 50 }),   // "deploy" | "project" | "user" | "admin" | "billing" | "system"
+  category: varchar("category", { length: 50 }),   // "deploy" | "project" | "user" | "admin" | "billing" | "system" | "integration"
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -283,7 +328,7 @@ export const sessions = pgTable("sessions", {
 
 ---
 
-## Step 4: Authentication (Passport.js)
+## Step 5: Authentication (Passport.js)
 
 ### Setup
 
@@ -313,7 +358,7 @@ passport.use(new LocalStrategy(
 const PgStore = connectPgSimple(session);
 app.use(session({
   store: new PgStore({ conString: process.env.DATABASE_URL }),
-  secret: process.env.SESSION_SECRET || "omnilang-secret-change-me",
+  secret: process.env.SESSION_SECRET || "matt-secret-change-me",
   resave: false,
   saveUninitialized: false,
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }  // 30 days
@@ -340,7 +385,7 @@ export function isAdmin(req, res, next) {
 
 ---
 
-## Step 5: API Routes
+## Step 6: API Routes
 
 ### Auth Routes
 ```
@@ -376,15 +421,16 @@ POST   /api/transpile          — { code, filename } → returns { javascript, 
 POST   /api/execute            — { code } → transpile + execute in sandboxed VM, return output
 ```
 
-### AI Routes (authenticated)
+### AI / Chat Routes (authenticated)
 ```
-POST   /api/ai/chat            — { message, projectId, context } → AI response
+POST   /api/ai/chat            — { message, projectId, context, provider, model } → AI response
 GET    /api/ai/history/:projectId  — get chat history for a project
 POST   /api/ai/explain         — { code } → explain code
 POST   /api/ai/fix             — { code, error } → suggest fix
-POST   /api/ai/generate        — { prompt, projectId } → generate OmniLang code
+POST   /api/ai/generate        — { prompt, projectId } → generate code
 POST   /api/ai/refactor        — { code } → refactored code
 POST   /api/ai/document        — { code } → generate documentation
+GET    /api/ai/providers       — list available LLM providers and models
 ```
 
 ### Agent Routes (authenticated)
@@ -402,9 +448,20 @@ GET    /api/deployments                     — list user's deployments
 POST   /api/deployments                     — create deployment { projectId, platform, region, envVars }
 GET    /api/deployments/:id/logs            — get build logs
 DELETE /api/deployments/:id                 — take down deployment
-POST   /api/services/connect/:platform      — initiate OAuth for DigitalOcean/Vercel/etc.
+POST   /api/services/connect/:platform      — initiate OAuth for hosting platforms
 GET    /api/services/callback/:platform     — OAuth callback
 GET    /api/services/status                 — connection status for all services
+```
+
+### Integration Routes (authenticated)
+```
+GET    /api/integrations                    — list all available integrations (with user's connection status)
+GET    /api/integrations/connected          — list user's connected integrations only
+POST   /api/integrations/:serviceId/connect — initiate connection (OAuth or API key)
+POST   /api/integrations/:serviceId/disconnect — disconnect integration
+POST   /api/integrations/:serviceId/test    — test connection health
+GET    /api/integrations/:serviceId/config  — get integration-specific settings
+PUT    /api/integrations/:serviceId/config  — update integration settings
 ```
 
 ### Database Connection Routes (authenticated)
@@ -437,6 +494,7 @@ PUT    /api/admin/billing/plans     — update plans
 GET    /api/admin/features          — get feature flags
 PUT    /api/admin/features/:name    — toggle feature flag
 
+GET    /api/admin/integrations      — integration usage analytics across all users
 GET    /api/admin/system/health     — system health checks
 GET    /api/admin/system/logs       — error logs
 GET    /api/admin/activity          — activity feed across all users
@@ -444,13 +502,13 @@ GET    /api/admin/activity          — activity feed across all users
 
 ---
 
-## Step 6: The OmniLang Transpiler
+## Step 7: The Multi-Language Transpiler
 
-Port the transpiler from the current `app.js` into `server/services/transpiler.ts` AND `client/src/lib/transpiler.ts` (for real-time client-side preview). The transpiler converts OmniLang (a JavaScript superset) to valid JavaScript:
+Port the transpiler from the current `app.js` into `server/services/transpiler.ts` AND `client/src/lib/transpiler.ts` (for real-time client-side preview). The transpiler converts multiple language syntaxes to valid JavaScript:
 
 ### Transpilation Rules
 
-| OmniLang | JavaScript | Source |
+| Source Syntax | JavaScript Output | Origin Language |
 |---|---|---|
 | `def funcName(args) {` | `function funcName(args) {` | Python |
 | `func funcName(args) {` | `function funcName(args) {` | Go |
@@ -479,23 +537,46 @@ Standard JavaScript also works unchanged — it's a true superset.
 
 ---
 
-## Step 7: AI Integration (OpenAI)
+## Step 8: AI Integration (Any LLM Provider)
 
-Use the OpenAI API for the AI coding assistant. Users configure their own API key in Settings, or the platform can provide a shared key for Pro/Team plans.
+Matt supports **any LLM** via an OpenAI-compatible API layer. Users configure their preferred provider and API key in Settings.
 
 ```typescript
 // server/services/ai-assistant.ts
 
 import OpenAI from "openai";
 
-const SYSTEM_PROMPT = `You are OmniLang AI, a coding assistant for the OmniLang programming language.
-OmniLang is a JavaScript superset that accepts syntax from Python, Go, Rust, C#, and Java.
-Help users write, debug, explain, and refactor OmniLang code.
-When generating code, use OmniLang syntax (def/func/fn for functions, := for declarations, print() for output).
+// Supported providers with their base URLs
+const PROVIDERS = {
+  openai:    { baseURL: "https://api.openai.com/v1",          models: ["gpt-4o", "gpt-4o-mini", "o1-preview", "o1-mini"] },
+  anthropic: { baseURL: "https://api.anthropic.com/v1",       models: ["claude-3.5-sonnet", "claude-3-opus", "claude-3-haiku"] },
+  google:    { baseURL: "https://generativelanguage.googleapis.com/v1beta/openai", models: ["gemini-2.0-flash", "gemini-1.5-pro"] },
+  mistral:   { baseURL: "https://api.mistral.ai/v1",          models: ["mistral-large", "mistral-medium", "codestral"] },
+  groq:      { baseURL: "https://api.groq.com/openai/v1",     models: ["llama-3.1-70b", "mixtral-8x7b"] },
+  together:  { baseURL: "https://api.together.xyz/v1",         models: ["meta-llama/Llama-3.1-405B"] },
+  openrouter:{ baseURL: "https://openrouter.ai/api/v1",       models: ["auto"] },
+  custom:    { baseURL: "",                                     models: [] },  // User-defined endpoint
+};
+
+const SYSTEM_PROMPT = `You are Matt AI, the coding assistant for Macro Tech Titan AI.
+Matt is a Super Framework — a meta layer that works with any programming language, any API, and any LLM.
+The built-in transpiler accepts syntax from Python, Go, Rust, C#, Java, and JavaScript.
+Help users write, debug, explain, and refactor code in any language.
+When generating code, feel free to use multi-language syntax (def/func/fn for functions, := for declarations, print() for output).
 Be concise and practical.`;
 
-export async function chat(userMessage: string, context: string, apiKey: string, model: string = "gpt-4o") {
-  const openai = new OpenAI({ apiKey });
+export async function chat(
+  userMessage: string,
+  context: string,
+  apiKey: string,
+  provider: string = "openai",
+  model: string = "gpt-4o"
+) {
+  const providerConfig = PROVIDERS[provider] || PROVIDERS.openai;
+  const openai = new OpenAI({
+    apiKey,
+    baseURL: provider === "custom" ? undefined : providerConfig.baseURL,
+  });
   const response = await openai.chat.completions.create({
     model,
     messages: [
@@ -509,17 +590,17 @@ export async function chat(userMessage: string, context: string, apiKey: string,
 }
 ```
 
-**Environment variable:** `OPENAI_API_KEY` — Platform-level API key for shared usage. Users can also set their own key in Settings.
+**Environment variable:** `OPENAI_API_KEY` — Platform-level API key for shared usage. Users can also set their own key + provider in Settings.
 
 ---
 
-## Step 8: Frontend Design System
+## Step 9: Frontend — 3 Core Modes
 
 ### Layout: 3-Column IDE
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│ HEADER: [Logo] OmniLang  [Question][Coding][Agents][Deploy]    │
+│ HEADER: [Matt Logo] Matt  [Coding][Chat][Deploy]  [⚙️][👤]     │
 ├──────────┬────────────────────────────────┬─────────────────────┤
 │ LEFT     │ MIDDLE (huge)                  │ RIGHT               │
 │ ~220px   │ Monaco Editor (top)            │ ~300px              │
@@ -529,14 +610,13 @@ export async function chat(userMessage: string, context: string, apiKey: string,
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-### 4 Modes (header tabs switch content in left + right panels)
+### 3 Core Modes (header tabs switch content in left + right panels)
 
-| Mode | Left Panel | Right Panel |
-|---|---|---|
-| **Question** | Search, quick prompts, conversation history | AI response area with code blocks |
-| **Coding** | File explorer, packages, settings | Transpiled JS / Problems / Language Ref tabs |
-| **Agents** | Agent cards (Code Review, Testing, Docs, Optimization, Security, Refactor) | Agent detail, config, results |
-| **Deploy** | Hosting services list (8 platforms) | Deploy config, env vars, DB connections, logs |
+| Mode | Left Panel | Right Panel | Description |
+|---|---|---|---|
+| **Coding** | File explorer, packages, project settings | Transpiled output / Problems / Language Ref tabs | Build anything — write code, manage files, see real-time transpilation |
+| **Chat** | Conversation history, quick prompts, model selector | AI response area with code blocks, inline actions (insert, copy, explain) | Talk to Matt AI — ask questions, generate code, debug, refactor |
+| **Deploy** | Hosting platforms list (8+ services), connected services | Deploy config, env vars, DB connections, build logs, live URL | Ship to any platform — one-click deployment with full config |
 
 ### Color Scheme (dark mode default)
 
@@ -562,7 +642,191 @@ export async function chat(userMessage: string, context: string, apiKey: string,
 
 ---
 
-## Step 9: Admin Panel Design
+## Step 10: Integrations Page
+
+Build a dedicated **Integrations** page accessible from the header or settings. This is a marketplace-style grid showing all possible integrations organized by category. Each card shows the service icon, name, description, connection status, and a Connect/Disconnect button.
+
+### Integration Categories & Services
+
+#### Hosting & Deployment
+| Service | Description | Auth Method |
+|---|---|---|
+| **DigitalOcean** | Cloud infrastructure, App Platform, Droplets | OAuth |
+| **Render** | Zero-config cloud hosting, auto-deploy from Git | API Key |
+| **Vercel** | Frontend cloud, serverless functions, edge network | OAuth |
+| **Netlify** | Web hosting, serverless, forms, identity | OAuth |
+| **Railway** | Infrastructure platform, instant deploys | OAuth |
+| **Fly.io** | Run full-stack apps globally, edge compute | API Token |
+| **AWS** | EC2, Lambda, S3, Amplify, Elastic Beanstalk | Access Key + Secret |
+| **Google Cloud Platform** | Cloud Run, App Engine, Cloud Functions | Service Account |
+| **Microsoft Azure** | App Service, Functions, Static Web Apps | OAuth |
+| **GitHub Pages** | Static site hosting from GitHub repos | OAuth (via GitHub) |
+| **Heroku** | Platform-as-a-service, add-ons marketplace | OAuth |
+| **Cloudflare Pages** | JAMstack hosting, Workers, edge functions | API Token |
+
+#### Databases
+| Service | Description | Auth Method |
+|---|---|---|
+| **Neon** | Serverless PostgreSQL, branching, autoscaling | Connection String |
+| **Supabase** | Open-source Firebase alternative, Postgres + Auth + Storage | API Key |
+| **PlanetScale** | Serverless MySQL, branching, schema changes | API Token |
+| **MongoDB Atlas** | Cloud-hosted MongoDB, search, vector | Connection String |
+| **Redis Cloud** | In-memory data store, caching, pub/sub | Connection String |
+| **Firebase** | Realtime DB, Firestore, Auth, Storage | Service Account |
+| **CockroachDB** | Distributed SQL, global scale | Connection String |
+| **Turso** | SQLite at the edge, libSQL | API Token |
+| **Upstash** | Serverless Redis and Kafka | API Key |
+
+#### AI & Machine Learning
+| Service | Description | Auth Method |
+|---|---|---|
+| **OpenAI** | GPT-4o, DALL-E, Whisper, Embeddings | API Key |
+| **Anthropic** | Claude 3.5 Sonnet, Claude 3 Opus | API Key |
+| **Google AI (Gemini)** | Gemini 2.0 Flash, Gemini Pro | API Key |
+| **Mistral AI** | Mistral Large, Codestral | API Key |
+| **Groq** | Ultra-fast inference, Llama, Mixtral | API Key |
+| **Hugging Face** | Model hub, inference API, spaces | API Token |
+| **Replicate** | Run open-source models in the cloud | API Token |
+| **Together AI** | Open-source model hosting, fine-tuning | API Key |
+| **OpenRouter** | Unified API for 100+ models | API Key |
+| **Cohere** | Enterprise NLP, embeddings, rerank | API Key |
+| **Perplexity AI** | AI-powered search and answer API | API Key |
+| **Ollama** | Run local LLMs (connect to local instance) | Local URL |
+
+#### Email & Communication
+| Service | Description | Auth Method |
+|---|---|---|
+| **SendGrid** | Transactional and marketing email API | API Key |
+| **Resend** | Modern email API for developers | API Key |
+| **Postmark** | Transactional email with delivery tracking | API Token |
+| **Mailgun** | Email sending, receiving, and tracking | API Key |
+| **AWS SES** | Scalable email sending service | Access Key |
+| **Twilio** | SMS, Voice, WhatsApp, Video | Account SID + Auth Token |
+| **Slack** | Team messaging, webhooks, bot integration | OAuth |
+| **Discord** | Bot integration, webhooks, community tools | Bot Token |
+| **Microsoft Teams** | Team messaging, meeting integration | OAuth |
+
+#### Analytics & Monitoring
+| Service | Description | Auth Method |
+|---|---|---|
+| **Google Analytics** | Web analytics, event tracking | OAuth |
+| **Mixpanel** | Product analytics, funnels, retention | API Key |
+| **PostHog** | Open-source product analytics, feature flags | API Key |
+| **Amplitude** | Digital analytics, experimentation | API Key |
+| **Sentry** | Error tracking, performance monitoring | DSN / API Key |
+| **Datadog** | Infrastructure monitoring, APM, logs | API Key |
+| **LogRocket** | Session replay, error tracking | API Key |
+| **New Relic** | Full-stack observability | API Key |
+| **Grafana Cloud** | Dashboards, alerting, Prometheus, Loki | API Token |
+| **Plausible** | Privacy-friendly web analytics | API Key |
+
+#### Storage & CDN
+| Service | Description | Auth Method |
+|---|---|---|
+| **AWS S3** | Object storage, static hosting | Access Key |
+| **Cloudflare R2** | S3-compatible storage, zero egress fees | API Token |
+| **Google Cloud Storage** | Object storage, CDN integration | Service Account |
+| **Azure Blob Storage** | Scalable object storage | Connection String |
+| **Backblaze B2** | Affordable cloud storage | API Key |
+| **Uploadthing** | File uploads for Next.js / React | API Key |
+| **Cloudinary** | Image and video management, transformations | API Key + Secret |
+| **imgix** | Real-time image processing CDN | API Key |
+
+#### CI/CD & Version Control
+| Service | Description | Auth Method |
+|---|---|---|
+| **GitHub** | Repos, Actions, Issues, PRs, Packages | OAuth |
+| **GitLab** | Repos, CI/CD pipelines, Container Registry | OAuth |
+| **Bitbucket** | Repos, Pipelines, Jira integration | OAuth |
+| **CircleCI** | CI/CD pipelines, orbs | API Token |
+| **GitHub Actions** | Workflow automation, CI/CD | OAuth (via GitHub) |
+| **Docker Hub** | Container registry, automated builds | Access Token |
+
+#### Payment & Billing
+| Service | Description | Auth Method |
+|---|---|---|
+| **Stripe** | Payments, subscriptions, billing | API Key |
+| **PayPal** | Payments, checkout, subscriptions | Client ID + Secret |
+| **Lemon Squeezy** | Payments for digital products, SaaS | API Key |
+| **Paddle** | SaaS billing, tax compliance | API Key |
+
+#### Authentication
+| Service | Description | Auth Method |
+|---|---|---|
+| **Auth0** | Identity platform, SSO, MFA | Client ID + Secret |
+| **Clerk** | User management, prebuilt auth components | API Key |
+| **Supabase Auth** | Open-source auth, social logins | (via Supabase) |
+| **Firebase Auth** | Google sign-in, email/password, phone | (via Firebase) |
+| **Kinde** | Auth for modern apps, feature flags | API Key |
+| **WorkOS** | Enterprise SSO, Directory Sync, Admin Portal | API Key |
+
+#### CMS & Content
+| Service | Description | Auth Method |
+|---|---|---|
+| **Sanity** | Structured content platform, GROQ | API Token |
+| **Contentful** | Headless CMS, content modeling | API Key |
+| **Strapi** | Open-source headless CMS | API Token |
+| **Prismic** | Headless CMS, Slice Machine | API Key |
+| **Notion** | Workspace, databases, API | Integration Token |
+
+#### Project Management & Productivity
+| Service | Description | Auth Method |
+|---|---|---|
+| **Linear** | Issue tracking, project management | API Key |
+| **Jira** | Issue tracking, agile boards | OAuth |
+| **Asana** | Task management, workflows | OAuth |
+| **Trello** | Kanban boards, power-ups | API Key |
+| **Airtable** | Spreadsheet-database hybrid | API Key |
+| **Google Sheets** | Spreadsheet API, data sync | OAuth |
+
+#### Search & Data
+| Service | Description | Auth Method |
+|---|---|---|
+| **Algolia** | Search-as-a-service, instant search | API Key |
+| **Typesense** | Open-source search engine | API Key |
+| **Meilisearch** | Fast, typo-tolerant search | API Key |
+| **Pinecone** | Vector database for AI | API Key |
+| **Weaviate** | Vector search engine | API Key |
+| **Elasticsearch** | Full-text search, analytics | Connection URL |
+
+#### Scheduling & Automation
+| Service | Description | Auth Method |
+|---|---|---|
+| **Zapier** | Workflow automation, 5000+ app connections | API Key |
+| **Make (Integromat)** | Visual automation platform | API Key |
+| **n8n** | Self-hostable workflow automation | API Key |
+| **Cal.com** | Open-source scheduling | API Key |
+| **Cronitor** | Cron job monitoring | API Key |
+
+#### Domain & DNS
+| Service | Description | Auth Method |
+|---|---|---|
+| **Cloudflare** | DNS, CDN, DDoS protection, Workers | API Token |
+| **Namecheap** | Domain registration, DNS management | API Key |
+| **Google Domains** | Domain registration | OAuth |
+| **Route 53 (AWS)** | DNS management, health checks | Access Key |
+
+### Integration Card UI
+
+Each integration card displays:
+- Service logo/icon (use brand colors or neutral icon)
+- Service name
+- Short description
+- Category badge
+- Connection status indicator (green dot = connected, gray = disconnected)
+- "Connect" button (or "Disconnect" if connected)
+- "Configure" link for connected services
+
+### Integration Page Layout
+- Search bar at top to filter integrations
+- Category filter tabs/pills
+- Grid layout (3-4 cards per row on desktop, 1-2 on mobile)
+- "Connected" section at top showing active integrations
+- Each category is a collapsible section
+
+---
+
+## Step 11: Admin Panel Design
 
 The admin panel is a separate view accessed via `#admin` or `/admin` route. It ONLY appears for users with email `jgelet@macrotechtitan.com`.
 
@@ -571,16 +835,17 @@ The admin panel is a separate view accessed via `#admin` or `/admin` route. It O
 2. **Users** — searchable/filterable table, role management, suspend/activate, bulk actions
 3. **Projects** — all projects across all users
 4. **Deployments** — all deployments, status indicators, log viewer
-5. **Platform Settings** — site name, registration mode, AI defaults, SMTP, maintenance mode
-6. **Billing** — plan management, revenue overview, transactions, Stripe settings
-7. **Feature Flags** — toggle features per plan (AI Autocomplete, Agents, Deployment, Collaboration, Custom Themes, API Access)
-8. **System** — health indicators (API, DB, AI, Deploy pipeline), error logs, performance metrics
+5. **Integrations** — integration usage analytics (most popular integrations, connection rates, errors)
+6. **Platform Settings** — site name, registration mode, AI defaults, SMTP, maintenance mode
+7. **Billing** — plan management, revenue overview, transactions, Stripe settings
+8. **Feature Flags** — toggle features per plan (AI Autocomplete, Agents, Deployment, Collaboration, Custom Themes, API Access, Integrations)
+9. **System** — health indicators (API, DB, AI, Deploy pipeline), error logs, performance metrics
 
 Admin elements use an amber/orange accent (#d29922) to visually distinguish from the regular IDE.
 
 ---
 
-## Step 10: Replit Configuration
+## Step 12: Replit Configuration
 
 ### `.replit` file
 ```toml
@@ -652,7 +917,7 @@ externalPort = 80
 
 ---
 
-## Step 11: Environment Variables (Replit Secrets)
+## Step 13: Environment Variables (Replit Secrets)
 
 Set these in Replit's Secrets tab:
 
@@ -660,15 +925,19 @@ Set these in Replit's Secrets tab:
 |---|---|---|
 | `DATABASE_URL` | Neon PostgreSQL connection string | Yes |
 | `SESSION_SECRET` | Random 64-char string | Yes |
-| `OPENAI_API_KEY` | OpenAI API key for AI assistant | Optional (users can set their own) |
+| `OPENAI_API_KEY` | OpenAI API key (platform-level, for shared AI) | Optional (users can set their own) |
+| `ANTHROPIC_API_KEY` | Anthropic API key (for Claude models) | Optional |
 | `DIGITALOCEAN_TOKEN` | DigitalOcean API token | Optional |
 | `VERCEL_TOKEN` | Vercel API token | Optional |
+| `RENDER_API_KEY` | Render API key | Optional |
 | `STRIPE_SECRET_KEY` | Stripe secret key for billing | Optional |
 | `STRIPE_PUBLISHABLE_KEY` | Stripe publishable key | Optional |
+| `SENDGRID_API_KEY` | SendGrid API key for email | Optional |
+| `SENTRY_DSN` | Sentry DSN for error tracking | Optional |
 
 ---
 
-## Step 12: Seed Data
+## Step 14: Seed Data
 
 Run `npm run db:seed` to populate the database with:
 
@@ -679,23 +948,24 @@ Run `npm run db:seed` to populate the database with:
 - **Plan:** team
 
 ### Demo user:
-- **Email:** demo@omnilang.dev
+- **Email:** demo@matt.dev
 - **Password:** demo123 (bcrypt hashed)
 - **Role:** user
 - **Plan:** pro
 
 ### Additional seed data (for admin dashboard):
 - 15 additional sample users with varied roles, plans, and activity levels
-- 5 sample projects with OmniLang files
-- 3 sample deployments (Vercel, DigitalOcean, Netlify)
-- 6 feature flags (AI Autocomplete, Agents, Deployment, Collaboration, Custom Themes, API Access)
-- Platform settings (site name, registration open, default plan: free)
+- 5 sample projects with code files in various languages
+- 3 sample deployments (Vercel, DigitalOcean, Render)
+- 6 feature flags (AI Autocomplete, Agents, Deployment, Collaboration, Custom Themes, API Access, Integrations)
+- 10 sample integrations across categories (GitHub, Vercel, Neon, OpenAI, SendGrid, etc.)
+- Platform settings (site name: "Matt", registration open, default plan: free)
 - 20+ activity log entries
 - 5 sample transactions
 
 ---
 
-## Step 13: First Run Checklist
+## Step 15: First Run Checklist
 
 After cloning and setting up on Replit:
 
@@ -706,20 +976,24 @@ After cloning and setting up on Replit:
 5. `npm run db:seed` — populates demo data
 6. `npm run dev` — starts the app on port 5000
 7. Log in with `jgelet@macrotechtitan.com` / `admin123`
-8. Verify IDE loads with Monaco editor, all 4 modes work
-9. Verify Admin Panel is accessible (click avatar → Admin Panel)
-10. Log out, log in with `demo@omnilang.dev` / `demo123`
-11. Verify Admin link is NOT visible for this user
-12. Test Sign Up with a new email — confirm it creates a "free" plan user
+8. Verify IDE loads with Monaco editor, all 3 modes work (Coding, Chat, Deploy)
+9. Verify the Integrations page loads with all categories
+10. Verify Admin Panel is accessible (click avatar → Admin Panel)
+11. Log out, log in with `demo@matt.dev` / `demo123`
+12. Verify Admin link is NOT visible for this user
+13. Test Sign Up with a new email — confirm it creates a "free" plan user
+14. Test connecting an integration (e.g., GitHub OAuth flow)
 
 ---
 
 ## Key Design Principles
 
-1. **The IDE is the product.** Every pixel of the 3-column layout should feel like VS Code — professional, fast, keyboard-driven.
-2. **Monaco Editor is non-negotiable.** Use `@monaco-editor/react` for the code editor. Register a custom "omnilang" language with syntax highlighting, autocomplete, and hover providers.
-3. **The transpiler must be real.** OmniLang code should actually transpile to JavaScript and execute. This is the core differentiator.
-4. **Admin is hidden.** Regular users should have zero awareness that an admin panel exists. No admin routes, no admin UI elements, no admin data leaks.
-5. **Settings persist.** When a user changes their editor font size or AI model, it should persist across sessions (stored in the users table).
-6. **AI is contextual.** The AI assistant should receive the current file content as context, understand OmniLang syntax, and respond with OmniLang code (not plain JavaScript).
-7. **Deployments are real-ready.** The deployment panel should be structured to wire up to real DigitalOcean/Vercel/Netlify APIs. For now, simulate the flow with realistic UI and status updates.
+1. **Matt is a Super Framework.** The branding, UI copy, and AI persona should all reinforce that this is a meta layer — not just another code editor. It works with *any* API, *any* language, *any* LLM.
+2. **3 modes are the product.** Coding, Chat, and Deploy are the three pillars. The mode tabs should be prominent and switching should be instant.
+3. **Monaco Editor is non-negotiable.** Use `@monaco-editor/react` for the code editor. Register a custom language with syntax highlighting, autocomplete, and hover providers.
+4. **The transpiler must be real.** Multi-language syntax should actually transpile to JavaScript and execute. This is the core differentiator.
+5. **Admin is hidden.** Regular users should have zero awareness that an admin panel exists. No admin routes, no admin UI elements, no admin data leaks.
+6. **Settings persist.** When a user changes their editor font size, AI model, or LLM provider, it should persist across sessions (stored in the users table).
+7. **AI is provider-agnostic.** The AI assistant should work with any OpenAI-compatible endpoint. Users choose their provider and model in Settings.
+8. **Integrations are first-class.** The Integrations page is a key differentiator — it shows that Matt connects to *everything*. Even if connections are simulated at first, the UI and data model should be production-ready.
+9. **Deployments are real-ready.** The deployment panel should be structured to wire up to real DigitalOcean/Vercel/Render/Netlify APIs. For now, simulate the flow with realistic UI and status updates.
